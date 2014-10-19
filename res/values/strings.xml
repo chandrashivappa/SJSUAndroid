@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+   <string name="app_name">Easy Deals</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="facebook">Login with Facebook</string>
+    <string name="signup">Not Registered ? SignUp</string>
+    <string name="signin">SignIn</string>
+    <string name="unameText">Username</string>
+    <string name="pwdText">Password</string>
+    <string name="unamehint">Email</string>
+    <string name="pwdHint">Password</string>
+    <string name="login">Login</string>
+    <string name="or">OR</string>
+    <string name="back">Back</string>
+    <string name="next">Next</string>
+    <string name="tempText">Currently Not Implemented. Please come back later!!</string>
+    <string name="signupText">SignUp - It\'s free!!</string>
+    <string name="fName">First name</string>
+    <string name="lName">Last name</string>
+    <string name="email">Email</string>
+    <string name="pwd">Password</string>
+    <string name="register">Register</string>
+    <string name="fbPage">Login with Facebook</string>
+    <string name="registration">User Registration - It\'s free!!</string>
+    <string name="registerBack">Back</string>
+    <string name="femalebutton">Female</string>
+    <string name="malebutton">Male</string>
+    <string name="dateOfBirth">DOB</string>
+    <string name="dobhint">Date of Birth</string>
+    <string name="imgContentDesc">Select DOB</string>
+    <string name="interestCheck">User Interests</string>
+    <string name="interestPageText">Your Interests are</string>
+    <string name="food">Food</string>
+    <string name="book">Books</string>
+    <string name="clothing">Clothing &amp; Apparel</string>
+    <string name="kid">Kids</string>
+    <string name="drinks">Hot &amp; Cool Drinks</string>
+    <string name="electronics">Electronics</string>
+    <string name="location">I agree to allow Easy Deals to track my current location</string>
+    <string name="submit">Submit</string>
+    <string name="successfulReg">You have successfully Registered!!! It\&apos;s time to start saving money!!!</string>
+    <string name="home">Home</string>
+    <string name="advName">Advertisement Name</string>
+    <string name="prodcName">Product name</string>
+    <string name="priceL">Price : </string>
+    <string name="storeL">Store : </string>
+    <string name="ageL">For Ages :</string>
+    <string name="priValue"></string>
+    <string name="stoValue"></string>
+    <string name="agePrefValue"></string>
+    <string name="signinTitle">SignIn</string>
+    <string name="userHome">Home</string>
+    <string name="userInterest">Interest Selection</string>
+    <string name="cardDetails">Card Details</string>
+    <string name="creditCardText">Credit Card</string>
+    <string name="costcoCardText">Costco Card</string>
+    <string name="homeTab">This is home</string>
+    <string name="historyTab">Select an option, to see your previous deals!!</string>
+    <string name="update">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="editUserTitle">Edit User Interests</string>
+    <string name="option">Select an option</string>
+    <string name="app_id">851642588181633</string>
+    
+    <string name="welcomeMessage">Welcome!! Today\&apos;s deals are </string>
+    
+    <string name="testText">Textt</string>
+    
+    <color name="blue">#6699FF</color>
+    <color name="orange">#FF9966</color>
+    <color name="black">#000000</color>
+    <color name="yellow">#f9f93d</color>
+    <color name="ligth_gray">#f4f4f4</color>
+    <color name="dark_gray">#343434</color>   
+    <color name="white">#FFFFFF</color>
+
+
+</resources>

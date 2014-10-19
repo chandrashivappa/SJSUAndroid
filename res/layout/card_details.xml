@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black" >
+
+    <EditText
+        android:id="@+id/costcoEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/costcoText"
+        android:layout_alignBottom="@+id/costcoText"
+        android:layout_alignLeft="@+id/cardOr"
+        android:ems="10"
+        android:inputType="number" >
+
+    </EditText>
+
+    <EditText
+        android:id="@+id/creditEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/creditText"
+        android:layout_alignBottom="@+id/creditText"
+        android:layout_alignLeft="@+id/cardOr"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:inputType="number" >
+
+        <requestFocus />
+    </EditText>
+
+    <TextView
+        android:id="@+id/costcoText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/creditText"
+        android:layout_centerVertical="true"
+        android:text="@string/costcoCardText"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/creditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/cardOr"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="69dp"
+        android:layout_marginLeft="18dp"
+        android:text="@string/creditCardText"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <Button
+        android:id="@+id/cardSubmit"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/costcoEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="40dp"
+        android:background="@drawable/green_button"
+        android:text="@string/submit" />
+
+    <TextView
+        android:id="@+id/cardOr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/costcoEditText"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="32dp"
+        android:text="@string/or"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+</RelativeLayout>

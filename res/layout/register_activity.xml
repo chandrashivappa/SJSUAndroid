@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black" >
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/firstName"
+        android:layout_below="@+id/firstName"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="@string/lName"
+        android:inputType="textPersonName"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue" />
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/eMail"
+        android:layout_below="@+id/eMail"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="@string/pwd"
+        android:inputType="textPassword"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue" />
+
+    <EditText
+        android:id="@+id/eMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lastName"
+        android:layout_below="@+id/lastName"
+        android:layout_marginTop="14dp"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textAppearance="?android:attr/textAppearanceMediumInverse"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        android:textColorLink="@color/yellow" />
+
+    <RadioButton
+        android:id="@+id/female"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/registerBackBtn"
+        android:layout_below="@+id/dobText"
+        android:layout_marginTop="16dp"
+        android:text="@string/femalebutton"
+        android:textColor="@color/blue"
+        android:textColorLink="@color/white" />
+
+    <RadioButton
+        android:id="@+id/male"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/female"
+        android:layout_alignBottom="@+id/female"
+        android:layout_alignLeft="@+id/register"
+        android:text="@string/malebutton"
+        android:textColor="@color/blue"
+        android:textColorLink="@color/white" />
+
+    <EditText
+        android:id="@+id/dobText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageButton1"
+        android:layout_alignLeft="@+id/female"
+        android:ems="10"
+        android:hint="@string/dobhint"
+        android:inputType="date"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue" />
+
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="38dp"
+        android:layout_marginTop="22dp"
+        android:ems="10"
+        android:hint="@string/fName"
+        android:inputType="text"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue" >
+
+        <requestFocus />
+    </EditText>
+
+    <Button
+        android:id="@+id/registerBackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/password"
+        android:layout_below="@+id/female"
+        android:layout_marginTop="29dp"
+        android:background="@drawable/green_button"
+        android:text="@string/registerBack" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/registerBackBtn"
+        android:layout_alignBottom="@+id/registerBackBtn"
+        android:layout_alignRight="@+id/password"
+        android:background="@drawable/green_button"
+        android:text="@string/register"
+        android:textColor="@color/black" />
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_below="@+id/password"
+        android:layout_toRightOf="@+id/male"
+        android:contentDescription="@string/imgContentDesc"
+        android:cropToPadding="true"
+        android:src="@drawable/calender_icon" />
+
+</RelativeLayout>

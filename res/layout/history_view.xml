@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:orientation="vertical"
+    android:scrollbars="vertical"
+    tools:context=".DeviceFragment" >
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/historyMargin"
+        android:text="@string/historyTab"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow"
+        android:textColorHint="@color/yellow" />
+
+    <Spinner
+        android:id="@+id/spinner1"
+        android:layout_width="204dp"
+        android:layout_height="wrap_content"
+        android:prompt="@string/option" />
+
+   <!--  <ListView
+        android:id="@+id/adsList"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+    </ListView> -->
+    
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/black" />
+     
+</LinearLayout>

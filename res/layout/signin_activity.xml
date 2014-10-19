@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black" >
+
+    <TextView
+        android:id="@+id/pwdText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/emailEdit"
+        android:layout_marginTop="39dp"
+        android:text="@string/pwdText"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <Button
+        android:id="@+id/loginBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/green_button"
+        android:text="@string/login" />
+
+    <EditText
+        android:id="@+id/pwdEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/pwdText"
+        android:layout_alignBottom="@+id/pwdText"
+        android:layout_alignParentRight="true"
+        android:ems="10"
+        android:hint="@string/pwdHint"
+        android:inputType="textPassword"
+        android:textColor="@color/blue" />
+
+    <TextView
+        android:id="@+id/emailText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/loginBtn"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="89dp"
+        android:text="@string/unameText"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <EditText
+        android:id="@+id/emailEdit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/emailText"
+        android:layout_alignBottom="@+id/emailText"
+        android:layout_alignLeft="@+id/pwdEdit"
+        android:ems="10"
+        android:hint="@string/unamehint"
+        android:inputType="textEmailAddress"
+        android:textColor="@color/blue">
+        <requestFocus />
+    </EditText>
+
+</RelativeLayout>

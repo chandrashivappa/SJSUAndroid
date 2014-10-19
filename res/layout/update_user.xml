@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black" >
+    
+    <CheckBox
+        android:id="@+id/food"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/books"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="17dp"
+        android:text="@string/food"
+        android:textColor="@color/yellow" />
+
+    <CheckBox
+        android:id="@+id/drinks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/electronics"
+        android:layout_below="@+id/cloth"
+        android:text="@string/drinks"
+        android:textColor="@color/yellow" />
+
+    <CheckBox
+        android:id="@+id/cloth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/drinks"
+        android:layout_below="@+id/kid"
+        android:text="@string/clothing"
+        android:textColor="@color/yellow" />
+
+    <CheckBox
+        android:id="@+id/kid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cloth"
+        android:layout_below="@+id/books"
+        android:text="@string/kid"
+        android:textColor="@color/yellow" />
+
+    <CheckBox
+        android:id="@+id/books"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/kid"
+        android:layout_below="@+id/food"
+        android:text="@string/book"
+        android:textColor="@color/yellow" />
+
+    <CheckBox
+        android:id="@+id/electronics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/drinks"
+        android:layout_centerHorizontal="true"
+        android:text="@string/electronics"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/interestPageText"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/yellow"
+        android:textColorHint="@color/yellow" />
+
+    <CheckBox
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/electronics"
+        android:layout_marginTop="15dp"
+        android:text="@string/location"
+        android:textColor="@color/yellow" />
+
+    <Button
+        android:id="@+id/cancelBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/next"
+        android:layout_alignBottom="@+id/next"
+        android:layout_alignLeft="@+id/textView1"
+        android:background="@drawable/green_button"
+        android:text="@string/cancel" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/textView1"
+        android:layout_below="@+id/location"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/green_button"
+        android:text="@string/update" />
+</RelativeLayout>

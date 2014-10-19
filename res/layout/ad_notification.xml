@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black" >
+
+    <TextView
+        android:id="@+id/priceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@+id/prodName"
+        android:layout_marginLeft="24dp"
+        android:layout_marginTop="19dp"
+        android:text="@string/priceL"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/agePreferenceLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/storeNameLabel"
+        android:layout_below="@+id/storeNameLabel"
+        android:layout_marginTop="46dp"
+        android:text="@string/ageL"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/prodName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/adName"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="33dp"
+        android:text="@string/prodcName"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/adName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="37dp"
+        android:text="@string/advName"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/storeNameLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/priceLabel"
+        android:layout_below="@+id/priceLabel"
+        android:layout_marginTop="39dp"
+        android:text="@string/storeL"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/ageValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/agePreferenceLabel"
+        android:layout_alignBottom="@+id/agePreferenceLabel"
+        android:layout_alignLeft="@+id/storeName"
+        android:text="@string/agePrefValue"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/priceValue"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/storeNameLabel"
+        android:layout_marginLeft="24dp"
+        android:layout_toRightOf="@+id/agePreferenceLabel"
+        android:text="@string/priValue"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+    <TextView
+        android:id="@+id/storeName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/agePreferenceLabel"
+        android:layout_alignLeft="@+id/priceValue"
+        android:text="@string/stoValue"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow" />
+
+</RelativeLayout>
