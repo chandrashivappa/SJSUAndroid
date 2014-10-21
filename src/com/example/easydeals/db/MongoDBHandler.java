@@ -38,7 +38,7 @@ public class MongoDBHandler {
 	private static final String POS_COLLECTION = "POS_COLLECTION_NAME";
 	private static final String LOCLAT = "locationLatitude";
 	private static final String LOCLONG = "locationLongitude";
-	private static final String MONGO_DB_HOST = "54.193.83.43";
+	private static final String MONGO_DB_HOST = "localhost";
 	//AdNotification adNotification;
 	RegCompleteActivity adNotification;
 	//Advertisement advertisement;
