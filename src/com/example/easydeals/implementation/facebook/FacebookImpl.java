@@ -119,11 +119,17 @@ public class FacebookImpl {
 	   	        	   String firstName = (String) response.getGraphObject().getProperty("first_name");
 	   	        	   String lastName = (String) response.getGraphObject().getProperty("last_name");
 	   	        	   
+	   	        	   
 	   	        	   userInfo.seteMail(email);
+	   	        	   com.example.easydeals.pojo.Session appSession = 
+	   	        			com.example.easydeals.pojo.Session.getInstance();
+	   	        	   
+	   	        	   appSession.setUserId(email);
+	   	        	   
 	   	        	   userInfo.setDob(birthDay);
 	   	        	   userInfo.setfName(firstName);
 	   	        	   userInfo.setlName(lastName);
-	   	        	   userInfo.setEmailType(2);
+	   	        	   userInfo.setEmailType(1);
 	   	        	   
 	   	        	   // Ideally categoryMap should not contain email. But to work with DAO layer
 	   	        	   // we need to put it here.
@@ -137,8 +143,8 @@ public class FacebookImpl {
 
    	RequestBatch requestBatch = new RequestBatch();
    	
-  	requestBatch.add(likeRequest);
    	requestBatch.add(userRequest);
+  	requestBatch.add(likeRequest);
    	
    	requestBatch.addCallback(new RequestBatch.Callback() {
 			

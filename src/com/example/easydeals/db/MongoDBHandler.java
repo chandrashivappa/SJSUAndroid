@@ -38,7 +38,7 @@ public class MongoDBHandler {
 	private static final String POS_COLLECTION = "POS_COLLECTION_NAME";
 	private static final String LOCLAT = "locationLatitude";
 	private static final String LOCLONG = "locationLongitude";
-	private static final String MONGO_DB_HOST = "LOCALHOST";
+	private static final String MONGO_DB_HOST = "54.193.83.43";
 	//AdNotification adNotification;
 	RegCompleteActivity adNotification;
 	//Advertisement advertisement;
@@ -212,6 +212,11 @@ public class MongoDBHandler {
 			DBCollection userCollection = db.getCollection(USER_COLLECTION_NAME);
 			
 			DBObject searchUser = new BasicDBObject();
+			String sessionEmail = com.example.easydeals.pojo.Session.getInstance().getUserId();
+			
+			if ((email == null) && (sessionEmail != null)) {
+				email = sessionEmail;
+			}
 			searchUser.put("email",  email);
 			
 			//inserting card details in cardDetails field
