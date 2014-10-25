@@ -171,10 +171,10 @@ public class FacebookImpl {
 			@Override
 			public void onBatchCompleted(RequestBatch batch) {
 				//calling async task to insert user data
-				new MongoDBInsert().execute(userInfo);
+				new MongoDBInsert().execute(userInfo,categoryMap);
 				
 				//calling async task to insert user interest in mongo db
-				new MongoDBUpdate().execute(categoryMap);
+				//new MongoDBUpdate().execute(categoryMap);
 
 			}
    		});
@@ -188,23 +188,26 @@ public class FacebookImpl {
 	
 	//async task class for inserting into mongo db
 	class MongoDBUpdate extends AsyncTask<Map<String, String>, String, String>{
-		MongoDBHandler mongoTest;
+		Map<String, String> userInterest;
+		MongoDBHandler mongoDB;
+		String email;
+		
 		@Override
-		protected String doInBackground(Map<String, String>... params) {
-			System.out.println("Inside async task of user interest activity");
-			Map<String, String> userInt = new HashMap<String, String>(); 
-			userInt = params[0];
-			String email = userInt.get("eMail");
-			System.out.println("The email got thru the category map iniside facebook impl ---> " + email);
-			mongoTest = new MongoDBHandler();
-			try {
-				mongoTest.insertUserInterestCollection(userInt);
-			} catch (UnknownHostException e) {
-				e.printStackTrace();
+		protected String doInBackground(Map<String, String> ...params){
+			userInterest = params[0];
+			if(userInterest != null){
+				email = userInterest.get("eMail");
+				System.out.println("Email of the FB user in the mongo update async task -----> " + email);
+				mongoDB = new MongoDBHandler();
+				try {
+					mongoDB.insertUserInterestCollection(userInterest);
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				}
 			}
 			return email;
 		}
-
+		
 		protected void onPostExecute(String st){
 			//Actions to be performed, after interest data is inserted into mongo db
 			System.out.println("User interest data inserted for user ---> !!" + st);
@@ -214,15 +217,19 @@ public class FacebookImpl {
 
 	// Async task, to insert data into mongo db, so that the main thread will
 	// not be used.
-	class MongoDBInsert extends AsyncTask<User, Void, String> {
+	class MongoDBInsert extends AsyncTask<Object, Void, String> {
 
+		Map<String, String> userInterest = new HashMap<String, String>();
+		@SuppressWarnings("unchecked")
 		@Override
-		protected String doInBackground(User... params) {
+		protected String doInBackground(Object... params) {
 			System.out.println("Inside async task of register activity");
 
 			// Instantiating mongo db handler class
 			mongoDB = new MongoDBHandler();
 			User user = (User) params[0];
+			userInterest = (Map<String, String>) params[1];
+			
 			try {
 				// calling the insert method to insert user data into mongo db
 				System.out.println("User email inside async task of user insert " + user.geteMail());
@@ -234,11 +241,13 @@ public class FacebookImpl {
 		}
 
 
+		@SuppressWarnings("unchecked")
 		protected void onPostExecute(String st) {
 			System.out.println("User data inserted in mongo db for user --->!!" + st);
 			System.out.println("User email on postexecute of user data insert --->!!" + easyDealsSession.getUserId());
 			System.out.println("The email type is  --->!!" + easyDealsSession.getEmailType());
 			
+			new MongoDBUpdate().execute(userInterest);
 			
 		}
 
