@@ -28,7 +28,7 @@ public class MongoDBHandler {
 	MongoClient mongoDB;
 	List<String> yesList = new ArrayList<String>();
 	int count = 0;
-	
+	//ec2-54-193-83-43.us-west-1.compute.amazonaws.com
 	private static final String MONGO_DB_NAME = "295B_MOBILEDB";
 	private static final String USER_COLLECTION_NAME="USER_INFO";
 	private static final String INTEREST_COLLECTION_NAME="INTEREST_INFO";
@@ -38,7 +38,9 @@ public class MongoDBHandler {
 	private static final String POS_COLLECTION = "POS_COLLECTION_NAME";
 	private static final String LOCLAT = "locationLatitude";
 	private static final String LOCLONG = "locationLongitude";
-	private static final String MONGO_DB_HOST = "localhost";
+	//private static final String MONGO_DB_HOST = "54.193.76.21";
+	//private static final String MONGO_DB_HOST = "54.183.152.20";
+	private static final String MONGO_DB_HOST = "54.193.83.43";
 	//AdNotification adNotification;
 	RegCompleteActivity adNotification;
 	//Advertisement advertisement;
@@ -100,8 +102,8 @@ public class MongoDBHandler {
 	}
 	
 	//authenticate user
-	public boolean authenticateUser(String eMail, String password) throws UnknownHostException{
-		boolean flag = false;
+	public String authenticateUser(String eMail, String password) throws UnknownHostException{
+		String flag = null;
 		System.out.println("+++++++++++++ to check whether user exists and if then verify pwd +++++++++++++++");
 		mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
 		DB db = mongoDB.getDB(MONGO_DB_NAME);
@@ -113,14 +115,54 @@ public class MongoDBHandler {
 		DBObject retObject =  userTable.findOne(queryUser);
 		if(retObject != null){
 			System.out.println("The ret object is --------------> " + retObject);
-			flag = true;
+			Integer typeOfUser =  (Integer) retObject.get("emailType");
+			System.out.println("The emailType is  --------------> " + typeOfUser);
+			if(typeOfUser == 2){
+				flag = "Signup User";
+			} else {
+				flag = "Fb User";
+			}
 		} else {
-			flag = false;
+			flag = "Incorrect";
 		}
 		
 		return flag;
 	}
 	
+	//Check whether the fb user has already entered the credit/costco card details
+	public boolean checkCardPresent(String email, int emailType) throws UnknownHostException{
+		mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
+		DB db = mongoDB.getDB(MONGO_DB_NAME);
+		DBCollection userInfo = db.getCollection(USER_COLLECTION_NAME);
+		boolean flag = false;
+		
+		DBObject queryUser = new BasicDBObject();
+		queryUser.put("email", email);
+		queryUser.put("emailType", emailType);
+		
+		DBObject result = userInfo.findOne(queryUser);
+		
+		if(result != null){
+			System.out.println(result);
+			DBObject cardDet = (DBObject) result.get("cardDetails");
+			if(cardDet != null){
+				flag = true;
+				String cardType = (String) cardDet.get("cardType");
+				String cardNum = (String) cardDet.get("cardNumber");
+				System.out.println("the card details are " + cardDet);
+				System.out.println("the card type is " + cardType);
+				System.out.println("the card number is " + cardNum);
+			} else {
+				flag = false;
+				System.out.println("the user has not entered the details");
+			}
+		} else {
+			System.out.println("There is no corresponding user ");
+		}
+
+		return flag;
+		
+	}
 	public void createInterestCollection(List<String> interestList) throws UnknownHostException{
 		/*currently manually creating the interest table and inserting the values
 		 * in the local	mongo db. When deploying in cloud the below can be used*/	
@@ -158,6 +200,7 @@ public class MongoDBHandler {
 		DBObject parentUserObject = userCollection.findOne(queryUser);
 		BasicDBObject userInterestInfo = new BasicDBObject();
 		for(String key : userInt.keySet()){
+			System.out.println("key inside db --> " + key + "value inside db --> " + userInt.get(key));
 			userInterestInfo.put(key, userInt.get(key));
 		}
 		
@@ -212,11 +255,6 @@ public class MongoDBHandler {
 			DBCollection userCollection = db.getCollection(USER_COLLECTION_NAME);
 			
 			DBObject searchUser = new BasicDBObject();
-			String sessionEmail = com.example.easydeals.pojo.Session.getInstance().getUserId();
-			
-			if ((email == null) && (sessionEmail != null)) {
-				email = sessionEmail;
-			}
 			searchUser.put("email",  email);
 			
 			//inserting card details in cardDetails field
@@ -264,6 +302,7 @@ public class MongoDBHandler {
 				//inserting the pushed ads into mongodb collection PUSHED_AD_DETAILS
 				pushedAdCollection.insert(adPushed);
 				System.out.println("The retailer id inside enter pushed ad details ============> " + adv.getId());
+				//change the fields to retailer email, ad id, ad category, pushed date-- remove count
 				insertAdCount(adv.getRetailerEmail(), adv.getId());
 				
 			}
@@ -416,7 +455,7 @@ public class MongoDBHandler {
 		
 		DBCursor recommendedId = posCollection.find(queryUserProduct);
 		
-		if(recommendedId != null){
+		if(recommendedId != null && recommendedId.count() != 0){
 			int count = recommendedId.count();
 			System.out.println("Recommended product count is ===> " + count);
 			recommendedProductId = new Integer[count];
@@ -517,7 +556,6 @@ public class MongoDBHandler {
 	}
 	//This method is called from getAdsByLocation, after a set of recommended product ids is received from pos.
 	public Advertisement[] getAdsBasedOnProductLocation(Integer [] recommendation, double longitude, double latitude) throws UnknownHostException, ParseException{
-		System.out.println("------------- Getting ads based on pos data and location -------------");
 		mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
 		DB db = mongoDB.getDB(MONGO_DB_NAME);
 		DBCollection adCollection = db.getCollection(AD_COLLECTION);
@@ -533,6 +571,7 @@ public class MongoDBHandler {
 		//Getting advertisements that match the location, and the advertisement expiry date
 		//is not less than the current date
 		if(recommendation != null){
+			System.out.println("------------- Getting ads based on pos data and location -------------");
 			locationObject.add(new BasicDBObject("storeLongitude", longitude));
 			locationObject.add(new BasicDBObject("storeLatitude", latitude));
 			locationObject.add(new BasicDBObject("startDate", new BasicDBObject("$lte", stDate)));
@@ -540,6 +579,7 @@ public class MongoDBHandler {
 			locationObject.add(new BasicDBObject("productId", new BasicDBObject("$in", recommendation)));
 			queryAdByLoc.put("$and", locationObject);
 		} else {
+			System.out.println("------------- Getting ads based location -------------");
 			locationObject.add(new BasicDBObject("storeLongitude", longitude));
 			locationObject.add(new BasicDBObject("storeLatitude", latitude));
 			locationObject.add(new BasicDBObject("startDate", new BasicDBObject("$lte", stDate)));
@@ -548,9 +588,9 @@ public class MongoDBHandler {
 		}
 		DBCursor advDetails = adCollection.find(queryAdByLoc);
 		int adCount = advDetails.count();
-		advertisement = new Advertisement[adCount];
 		int index = 0;
-		if(adCount != 0 || advDetails != null){
+		if(adCount != 0 && advDetails != null){
+			advertisement = new Advertisement[adCount];
 			while(advDetails.hasNext()){
 				DBObject adNotify = advDetails.next();
 				advertisement[index] = new Advertisement();

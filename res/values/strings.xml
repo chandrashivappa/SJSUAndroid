@@ -62,11 +62,15 @@
     <string name="cancel">Cancel</string>
     <string name="editUserTitle">Edit User Interests</string>
     <string name="option">Select an option</string>
-    <string name="app_id">851642588181633</string>
+    
     
     <string name="welcomeMessage">Welcome!! Today\&apos;s deals are </string>
     
     <string name="testText">Textt</string>
+    
+    <string name="app_id">851642588181633</string>
+  <!--  <string name="app_id">358083957687281</string> -->
+    
     
     <color name="blue">#6699FF</color>
     <color name="orange">#FF9966</color>

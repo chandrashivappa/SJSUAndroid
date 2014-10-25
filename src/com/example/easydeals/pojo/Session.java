@@ -5,8 +5,10 @@ public class Session {
     private static Session mInstance= null;
 
 	private String userEmail;
+	private int emailType;
 
-    protected Session(){}
+
+	protected Session(){}
 
     public static synchronized Session getInstance(){
     	if(null == mInstance){
@@ -21,5 +23,12 @@ public class Session {
 	
 	public String getUserId() {
 		return this.userEmail;
+	}
+	public int getEmailType() {
+		return emailType;
+	}
+	
+	public void setEmailType(int emailType) {
+		this.emailType = emailType;
 	}
 }

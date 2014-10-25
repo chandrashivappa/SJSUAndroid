@@ -9,34 +9,24 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.easydeals.implementation.MainActivity" >
 
-<!--     <Button -->
-<!--        android:id="@+id/faceBook" -->
-<!--        style="@dimen/activity_horizontal_margin" -->
-<!--        android:layout_width="wrap_content" -->
-<!--        android:layout_height="wrap_content" -->
-<!--        android:layout_centerHorizontal="true" -->
-<!--        android:layout_marginTop="49dp" -->
-<!--        android:background="@drawable/blue_button" -->
-<!--        android:text="@string/facebook" -->
-<!--        android:textSize="@dimen/abc_action_bar_title_text_size" /> -->
-
-     <com.facebook.widget.LoginButton
-        android:id="@+id/authButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="30dp"
-        />
-
+    <!-- <Button
+       android:id="@+id/faceBook"
+       style="@dimen/activity_horizontal_margin"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_centerHorizontal="true"
+       android:layout_marginTop="49dp"
+       android:background="@drawable/blue_button"
+       android:text="@string/facebook"
+       android:textSize="@dimen/abc_action_bar_title_text_size" /> -->
 
    <TextView
        android:id="@+id/or"
        android:layout_width="wrap_content"
        android:layout_height="wrap_content"
-       android:layout_below="@+id/authButton"
+       android:layout_alignParentTop="true"
        android:layout_centerHorizontal="true"
-       android:layout_marginTop="56dp"
+       android:layout_marginTop="176dp"
        android:text="@string/or"
        android:textColor="@color/white"
        android:textSize="@dimen/abc_action_bar_title_text_size" />
@@ -47,7 +37,7 @@
        android:layout_height="wrap_content"
        android:layout_below="@+id/or"
        android:layout_centerHorizontal="true"
-       android:layout_marginTop="51dp"
+       android:layout_marginTop="29dp"
        android:background="@drawable/green_button"
        android:text="@string/signin"
        android:textSize="@dimen/abc_action_bar_title_text_size" />
@@ -58,9 +48,17 @@
        android:layout_height="wrap_content"
        android:layout_below="@+id/signIn"
        android:layout_centerHorizontal="true"
-       android:layout_marginTop="18dp"
+       android:layout_marginTop="31dp"
        android:text="@string/signup"
        android:textAppearance="?android:attr/textAppearanceMedium"
        android:textColor="@color/yellow" />
+
+   <com.facebook.widget.LoginButton
+       android:id="@+id/authButton"
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+       android:layout_alignParentTop="true"
+       android:layout_centerHorizontal="true"
+       android:layout_marginTop="74dp" />
 
 </RelativeLayout>

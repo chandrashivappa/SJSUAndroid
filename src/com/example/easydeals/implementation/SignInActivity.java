@@ -26,7 +26,6 @@ public class SignInActivity extends ActionBarActivity implements OnClickListener
 	 @Override
 	    protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
-	        //this.requestWindowFeature(Window.FEATURE_CUSTOM_TITLE);
 	        setContentView(R.layout.signin_activity);
 	        userName = (EditText)findViewById(R.id.emailEdit);
 	        password = (EditText)findViewById(R.id.pwdEdit);
@@ -46,11 +45,11 @@ public class SignInActivity extends ActionBarActivity implements OnClickListener
 		
 	}
 	
-	class UserAuthentication extends AsyncTask<String, Void, Boolean>{
+	class UserAuthentication extends AsyncTask<String, Void, String>{
 
 		@Override
-		protected Boolean doInBackground(String... params) {
-			boolean flag = false;
+		protected String doInBackground(String... params) {
+			String flag = null;
 			System.out.println("Inside asynctask of signin ");
 			String email = params[0];
 			String password = params[1];
@@ -64,25 +63,25 @@ public class SignInActivity extends ActionBarActivity implements OnClickListener
 			return flag;
 		}
 		
-		protected void onPostExecute(Boolean status) {
+		protected void onPostExecute(String status) {
 			System.out.println("Inside onpostexecute of user authentication!!");
 
-			if(status){
-				
+			if(status.equalsIgnoreCase("Signup User")){
 				session = Session.getInstance();
 				session.setUserId(userEmail);
 				
 				Intent userHomePage = new Intent(getApplicationContext(), UserHomePageActivity.class);
 				userHomePage.putExtra("EMAIL",userEmail );
 				startActivity(userHomePage);
+			} else if (status.equalsIgnoreCase("Fb User")){
+				Toast.makeText(getApplicationContext(), "Sorry!!, You have to login using Facebook", Toast.LENGTH_LONG).show();
+				Intent loginPage = new Intent(getApplicationContext(),MainActivity.class );
+				startActivity(loginPage);
 			} else {
 				Toast.makeText(getApplicationContext(), "Username/Password is invalid. Please try again!!", Toast.LENGTH_LONG).show();
 				userName.setText("");
 				password.setText("");
 			}
-			
 		}
-		
 	}
-
 }

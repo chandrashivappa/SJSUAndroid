@@ -16,28 +16,32 @@ import com.example.easydeals.R;
 import com.example.easydeals.adapter.CustomHomeArrayAdapter;
 import com.example.easydeals.db.MongoDBHandler;
 import com.example.easydeals.pojo.Advertisement;
+import com.example.easydeals.pojo.Session;
 
 public class HomeActivity extends ListFragment {
-	String eMail;
+	String sessionEmail;
 	TextView emailText;
 	MongoDBHandler mongoDB;
 	ArrayList<Advertisement> advertisement = new ArrayList<Advertisement>();
 	CustomHomeArrayAdapter customAdapter;
 	View view;
+	Session session;
 	
 	//inserted on oct 8 night
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		// Inflate the layout for this fragment
-		eMail = getArguments().getString("EMAIL");
-		System.out.println("The user email inside home activity in onCreateView is ====> "+ eMail);
+		//sessionEmail = getArguments().getString("EMAIL");
+		session = Session.getInstance();
+		sessionEmail = session.getUserId();
+		System.out.println("The user email inside home activity in onCreateView is ====> "+ sessionEmail);
 		view = inflater.inflate(R.layout.home_view, container, false);
 		emailText = (TextView) view.findViewById(R.id.textView1);
 		mongoDB = new MongoDBHandler();
 		//emailText.setText(eMail);
 	try {
-			advertisement = mongoDB.getAdsPushedToUser(eMail);
+			advertisement = mongoDB.getAdsPushedToUser(sessionEmail);
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		} catch (ParseException e) {

@@ -21,6 +21,7 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 	Button cardSubmitBtn;
 	String creditCardNum, costcoCardNum;
 	String email;
+	int type;
 	MongoDBHandler mongoDB;
 	Session session;
 	String creditFlag, costcoFlag;
@@ -28,9 +29,9 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.card_details);
 		Intent regComplete = getIntent();
-		if (regComplete.getExtras() != null) {
-		   email = regComplete.getExtras().getString("EMAIL");
-		}
+		email = regComplete.getExtras().getString("EMAIL");
+		type = regComplete.getExtras().getInt("TYPE");
+		System.out.println("email using intent inside card details activity -----> " + email);
 		creditCard = (EditText)findViewById(R.id.creditEditText);
 		costcoCard = (EditText)findViewById(R.id.costcoEditText);
 		cardSubmitBtn = (Button)findViewById(R.id.cardSubmit);
@@ -55,10 +56,10 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 			costcoFlag = validate.validate("Costco", costcoCardNum);
 			if(creditFlag == "GOOD"){
 				//email = mongoDB.insertUserCardDetails(email, creditCardNum);
-				new CardDetailsInsert().execute(email, creditCardNum);
+				new CardDetailsInsert().execute(session.getUserId(), creditCardNum);
 			} else if (costcoFlag == "GOOD"){
 				//email = mongoDB.insertUserCardDetails(email, costcoCardNum);
-				new CardDetailsInsert().execute(email, costcoCardNum);
+				new CardDetailsInsert().execute(session.getUserId(), costcoCardNum);
 			} else if(creditFlag == "INVALID CARD" || costcoFlag == "INVALID CARD"){
 				callValidAlertBox();
 			} else {
@@ -81,13 +82,14 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 			return email;
 		}
 		protected void onPostExecute(String eMail) {
-			System.out.println("User data inserted in mongo db!!");
+			System.out.println("User card data inserted in mongo db!!");
 
 			// Moving to the user interest activity page, once the user info is
 			// inserted
 			Intent userIntent = new Intent(getApplicationContext(),
 					UserHomePageActivity.class);
 			userIntent.putExtra("EMAIL", eMail);
+			userIntent.putExtra("TYPE", session.getEmailType());
 			startActivity(userIntent);
 		}
 	}

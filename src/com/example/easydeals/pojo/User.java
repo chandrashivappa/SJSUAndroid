@@ -8,12 +8,12 @@ public class User {
 	String pwd;
 	String gender;
 	String dob;
-	int emailType;
+	Integer emailType;
 	
-	public int getEmailType() {
+	public Integer getEmailType() {
 		return emailType;
 	}
-	public void setEmailType(int emailType) {
+	public void setEmailType(Integer emailType) {
 		this.emailType = emailType;
 	}
 	public int getUserId() {
