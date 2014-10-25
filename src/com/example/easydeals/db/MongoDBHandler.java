@@ -28,7 +28,7 @@ public class MongoDBHandler {
 	MongoClient mongoDB;
 	List<String> yesList = new ArrayList<String>();
 	int count = 0;
-	//ec2-54-193-83-43.us-west-1.compute.amazonaws.com
+	
 	private static final String MONGO_DB_NAME = "295B_MOBILEDB";
 	private static final String USER_COLLECTION_NAME="USER_INFO";
 	private static final String INTEREST_COLLECTION_NAME="INTEREST_INFO";
@@ -38,9 +38,8 @@ public class MongoDBHandler {
 	private static final String POS_COLLECTION = "POS_COLLECTION_NAME";
 	private static final String LOCLAT = "locationLatitude";
 	private static final String LOCLONG = "locationLongitude";
-	//private static final String MONGO_DB_HOST = "54.193.76.21";
-	//private static final String MONGO_DB_HOST = "54.183.152.20";
-	private static final String MONGO_DB_HOST = "54.193.83.43";
+	
+	private static final String MONGO_DB_HOST = "localhost";
 	//AdNotification adNotification;
 	RegCompleteActivity adNotification;
 	//Advertisement advertisement;
