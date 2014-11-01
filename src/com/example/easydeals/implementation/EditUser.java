@@ -6,9 +6,12 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -35,6 +38,10 @@ public class EditUser extends ActionBarActivity implements OnClickListener, OnCh
 		email = userEditIntent.getExtras().getString("EMAIL");
 		System.out.println("The email id inside edit user is ---->" + email);
 		
+		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.editUserTitle) + "</big></font>"));
+
 		food = (CheckBox) findViewById(R.id.food);
 		books = (CheckBox) findViewById(R.id.books);
 		kids = (CheckBox) findViewById(R.id.kid);

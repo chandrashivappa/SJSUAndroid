@@ -18,15 +18,14 @@ import android.widget.Spinner;
 
 import com.example.easydeals.R;
 import com.example.easydeals.adapter.CustomHistoryAdapter;
-import com.example.easydeals.adapter.CustomHomeArrayAdapter;
 import com.example.easydeals.db.MongoDBHandler;
 import com.example.easydeals.pojo.Advertisement;
-import com.example.easydeals.pojo.Session;
+import com.example.easydeals.pojo.EasyDealsSession;
 
 public class HistoryActivity extends ListFragment implements OnItemSelectedListener{
 
 	public Spinner spinner;
-	Session session;
+	EasyDealsSession session;
 	String userEmail ;
 	MongoDBHandler mongoDB;
 	ArrayList<Advertisement>  advertisement;
@@ -40,12 +39,13 @@ public class HistoryActivity extends ListFragment implements OnItemSelectedListe
 	        Bundle savedInstanceState) {
 	        // Inflate the layout for this fragment
 	        View historyView = inflater.inflate(R.layout.history_view, container, false);
-	        session = Session.getInstance();
+	        session = EasyDealsSession.getInstance();
 	        userEmail = session.getUserId();
 	        mongoDB = new MongoDBHandler();
 	        
 	        spinner = (Spinner)historyView.findViewById(R.id.spinner1);
 	        ListView listView = (ListView)historyView.findViewById(android.R.id.list);
+	        System.out.println(listView);
 	        ArrayAdapter<String> historyAdapter = new ArrayAdapter<String>(getActivity(), android.R.layout.simple_spinner_item, timePeriod);
 	        historyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 	        spinner.setAdapter(historyAdapter);

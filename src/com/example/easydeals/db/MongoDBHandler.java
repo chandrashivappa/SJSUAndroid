@@ -28,7 +28,7 @@ public class MongoDBHandler {
 	MongoClient mongoDB;
 	List<String> yesList = new ArrayList<String>();
 	int count = 0;
-	
+
 	private static final String MONGO_DB_NAME = "295B_MOBILEDB";
 	private static final String USER_COLLECTION_NAME="USER_INFO";
 	private static final String INTEREST_COLLECTION_NAME="INTEREST_INFO";
@@ -58,7 +58,6 @@ public class MongoDBHandler {
 		uniqueUserFlag = isEmailUnique(user.geteMail());
 		if(uniqueUserFlag){
 			BasicDBObject userInfo = new BasicDBObject();
-			userInfo.put("firstName", user.getfName());
 			userInfo.put("lastName", user.getlName());
 			userInfo.put("email", user.geteMail());
 			userInfo.put("passWord", user.getPwd());
@@ -129,37 +128,38 @@ public class MongoDBHandler {
 	}
 	
 	//Check whether the fb user has already entered the credit/costco card details
-	public boolean checkCardPresent(String email, int emailType) throws UnknownHostException{
+	public Map<String, String> checkCardPresent(String email, int emailType) throws UnknownHostException{
+		System.out.println("************ Inside check card present method **************");
 		mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
 		DB db = mongoDB.getDB(MONGO_DB_NAME);
 		DBCollection userInfo = db.getCollection(USER_COLLECTION_NAME);
-		boolean flag = false;
+		Map<String, String> cardDetails = new HashMap<String, String>();
 		
 		DBObject queryUser = new BasicDBObject();
 		queryUser.put("email", email);
 		queryUser.put("emailType", emailType);
-		
 		DBObject result = userInfo.findOne(queryUser);
-		
 		if(result != null){
 			System.out.println(result);
 			DBObject cardDet = (DBObject) result.get("cardDetails");
 			if(cardDet != null){
-				flag = true;
 				String cardType = (String) cardDet.get("cardType");
 				String cardNum = (String) cardDet.get("cardNumber");
 				System.out.println("the card details are " + cardDet);
 				System.out.println("the card type is " + cardType);
 				System.out.println("the card number is " + cardNum);
+				cardDetails.put("cardType", cardType);
+				cardDetails.put("cardNumber", cardNum);
 			} else {
-				flag = false;
+				cardDetails.put("cardType", null);
+				cardDetails.put("cardNumber", null);
 				System.out.println("the user has not entered the details");
 			}
 		} else {
 			System.out.println("There is no corresponding user ");
 		}
 
-		return flag;
+		return cardDetails;
 		
 	}
 	public void createInterestCollection(List<String> interestList) throws UnknownHostException{
@@ -167,6 +167,7 @@ public class MongoDBHandler {
 		 * in the local	mongo db. When deploying in cloud the below can be used*/	
 		System.out.println("**************** Inside mongodb handler to insert interest data ****************");
 		int count = 1;
+		
 		mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
 		DB db = mongoDB.getDB(MONGO_DB_NAME);
 		DBCollection interestTable = db.getCollection(INTEREST_COLLECTION_NAME);
@@ -204,10 +205,12 @@ public class MongoDBHandler {
 		}
 		
 		// inserting the interest into main user collection based on the email
-		parentUserObject.put("interests", userInterestInfo);
-		parentUserObject.put(LOCLAT, 37.358005);
-		parentUserObject.put(LOCLONG,-121.997102);
-		userCollection.update(queryUser, parentUserObject);
+		if(userInterestInfo != null){
+			parentUserObject.put("interests", userInterestInfo);
+			parentUserObject.put(LOCLAT, 37.358005);
+			parentUserObject.put(LOCLONG,-121.997102);
+			userCollection.update(queryUser, parentUserObject);
+		}
 		mongoDB.close();
 	}
 	
@@ -302,8 +305,8 @@ public class MongoDBHandler {
 				pushedAdCollection.insert(adPushed);
 				System.out.println("The retailer id inside enter pushed ad details ============> " + adv.getId());
 				//change the fields to retailer email, ad id, ad category, pushed date-- remove count
-				insertAdCount(adv.getRetailerEmail(), adv.getId());
-				
+				//insertAdCount(adv.getRetailerEmail(), adv.getId());
+				insertAdCount( adv.getRetailerEmail(), adv.getId(), adv.getAdCategory(), adv.getCity(), adv.getState(), pushDate);
 			}
 			
 			
@@ -361,7 +364,8 @@ public class MongoDBHandler {
 	}
 
 	//inserting the count of the respective ads pushed to several users for web ui
-	public void insertAdCount(String retEmail, String adId) {
+	//insertAdCount( adv.getRetailerEmail(), adv.getId(), adv.getAdCategory(), adv.getCity(), adv.getState(), pushDate);
+	public void insertAdCount(String retEmail, String adId, String adCategory, String city, String state, Date adPushedDate) {
 		System.out.println("====== Inside the insert ad count method ======");
 		try {
 			mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
@@ -369,8 +373,19 @@ public class MongoDBHandler {
 			DBCollection adCountCollection = db.getCollection(AD_COUNT_COLLECTION);
 			
 			System.out.println("The retailer object id is " + adId);
+			BasicDBObject adPushed = new BasicDBObject();
+			adPushed.put("reatilerEmail", retEmail);
+			adPushed.put("adId", adId);
+			adPushed.put("adCategory", adCategory);
+			adPushed.put("city", city);
+			adPushed.put("state", state);
+			adPushed.put("pushedDate", adPushedDate);
 			
-			DBObject idSearchQuery = new BasicDBObject();
+			adCountCollection.insert(adPushed);
+			
+			System.out.println("The details are pushed in AD_COUNT");
+			
+			/*DBObject idSearchQuery = new BasicDBObject();
 			idSearchQuery.put("adId", adId);
 			
 			DBCursor adDetails = adCountCollection.find(idSearchQuery);
@@ -386,7 +401,7 @@ public class MongoDBHandler {
 				newAdCount.put("retailerEmail", retEmail);
 				newAdCount.put("count", 1);
 				adCountCollection.insert(newAdCount);
-			}
+			}*/
 		} catch (UnknownHostException e) {
 			e.printStackTrace();
 		}
@@ -593,11 +608,15 @@ public class MongoDBHandler {
 			while(advDetails.hasNext()){
 				DBObject adNotify = advDetails.next();
 				advertisement[index] = new Advertisement();
+				advertisement[index].setProductId(((Number)adNotify.get("productId")).intValue());
 				advertisement[index].setAdName((String)adNotify.get("adName"));
 				advertisement[index].setProductName((String)adNotify.get("productName"));
 				advertisement[index].setPrice((Double)adNotify.get("price"));
 				advertisement[index].setStoreName((String)adNotify.get("storeName"));
 				advertisement[index].setStoreLocation((String)adNotify.get("storeLocation"));
+				advertisement[index].setCity((String)adNotify.get("city"));
+				advertisement[index].setState((String)adNotify.get("state"));
+				advertisement[index].setZipcode((String)adNotify.get("zipcode"));
 				advertisement[index].setAgePreference(((Number)adNotify.get("agePreference")).intValue());
 				advertisement[index].setAdCategory((String)adNotify.get("adCategory"));
 				advertisement[index].setRetailerEmail((String)adNotify.get("retailerEmail"));

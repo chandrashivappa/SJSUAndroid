@@ -1,13 +1,11 @@
 package com.example.easydeals.implementation;
 
-import android.app.NotificationManager;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 
 import com.example.easydeals.R;
-import com.example.easydeals.db.MongoDBHandler;
 import com.example.easydeals.pojo.Advertisement;
 
 public class AdNotification extends ActionBarActivity {

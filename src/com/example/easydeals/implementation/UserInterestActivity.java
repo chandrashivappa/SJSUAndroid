@@ -7,9 +7,12 @@ import java.util.Map;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -20,7 +23,7 @@ import android.widget.CompoundButton.OnCheckedChangeListener;
 import com.example.easydeals.R;
 import com.example.easydeals.db.MongoDBHandler;
 import com.example.easydeals.db.SqlDbHandler;
-import com.example.easydeals.pojo.Session;
+import com.example.easydeals.pojo.EasyDealsSession;
 
 public class UserInterestActivity extends ActionBarActivity implements OnClickListener, OnCheckedChangeListener {
 
@@ -32,14 +35,18 @@ public class UserInterestActivity extends ActionBarActivity implements OnClickLi
 	Map<String, String> userInterest = null;
 	SqlDbHandler sdh = null;
 	MongoDBHandler mongoDB;
-	Session session;
+	EasyDealsSession session;
 
 	protected void onCreate(Bundle savedInstanceState) {
+		
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.interest_activity);
+		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.interestCheck) + "</big></font>"));
 		Intent userIntent = getIntent();
 		userEmail = userIntent.getExtras().getString("EMAIL");
-		session = Session.getInstance();
+		session = EasyDealsSession.getInstance();
 		System.out.println("user Email using session in user interest activity===> " + session.getUserId() );
 
 		food = (CheckBox) findViewById(R.id.food);

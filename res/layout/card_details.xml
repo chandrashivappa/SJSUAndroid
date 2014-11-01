@@ -74,4 +74,15 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/yellow" />
 
+    <TextView
+        android:id="@+id/changeCard"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/creditEditText"
+        android:layout_marginBottom="15dp"
+        android:layout_toLeftOf="@+id/cardSubmit"
+        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColorHint="@color/yellow" />
+
 </RelativeLayout>

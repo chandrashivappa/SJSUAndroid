@@ -8,9 +8,12 @@ import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -26,7 +29,7 @@ import com.example.easydeals.constants.EasyDealsDisplay;
 import com.example.easydeals.constants.Validation;
 import com.example.easydeals.db.MongoDBHandler;
 import com.example.easydeals.db.SqlDbHandler;
-import com.example.easydeals.pojo.Session;
+import com.example.easydeals.pojo.EasyDealsSession;
 import com.example.easydeals.pojo.User;
 
 public class RegisterActivity extends ActionBarActivity implements OnClickListener {
@@ -37,7 +40,7 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 	User userInfo;
 	List<RadioButton> radioGroup = new ArrayList<RadioButton>();
 	SqlDbHandler sdh = null;
-	Session session;
+	EasyDealsSession session;
 
 	MongoDBHandler mongoDB;
 
@@ -49,6 +52,9 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.register_activity);
+		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.registration) + "</big></font>"));
 		
 		Intent eType = getIntent();
 		 emailType = eType.getExtras().getInt("emailType");
@@ -214,7 +220,7 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 			// Moving to the user interest activity page, once the user info is
 			// inserted
 			if(st.equalsIgnoreCase("true")){
-				session = Session.getInstance();
+				session = EasyDealsSession.getInstance();
 				session.setUserId(userInfo.geteMail());
 				Intent userIntent = new Intent(getApplicationContext(),UserInterestActivity.class);
 				userIntent.putExtra("EMAIL", userInfo.geteMail());

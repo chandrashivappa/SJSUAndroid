@@ -1,47 +1,80 @@
 package com.example.easydeals.implementation;
 
+import java.net.UnknownHostException;
+import java.util.Map;
+
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.example.easydeals.R;
 import com.example.easydeals.constants.Validation;
 import com.example.easydeals.db.MongoDBHandler;
-import com.example.easydeals.pojo.Session;
+import com.example.easydeals.pojo.EasyDealsSession;
 
 public class CardDetailsCollectionActivity extends ActionBarActivity implements OnClickListener{
 
 	EditText creditCard, costcoCard;
 	Button cardSubmitBtn;
+	TextView cardChange;
 	String creditCardNum, costcoCardNum;
 	String email;
 	int type;
 	MongoDBHandler mongoDB;
-	Session session;
+	EasyDealsSession session;
 	String creditFlag, costcoFlag;
+	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.card_details);
+		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big><b>" + getString(R.string.cardDetails) + "</b></big></font>"));
 		Intent regComplete = getIntent();
 		email = regComplete.getExtras().getString("EMAIL");
+		session = EasyDealsSession.getInstance();
 		type = regComplete.getExtras().getInt("TYPE");
+		String sessionemail = session.getUserId();
 		System.out.println("email using intent inside card details activity -----> " + email);
 		creditCard = (EditText)findViewById(R.id.creditEditText);
 		costcoCard = (EditText)findViewById(R.id.costcoEditText);
 		cardSubmitBtn = (Button)findViewById(R.id.cardSubmit);
-		
+		cardChange = (TextView)findViewById(R.id.changeCard);
 		cardSubmitBtn.setOnClickListener(this);
 		
-		session = Session.getInstance();
-		System.out.println("email id using session in card details activity ===> " + session.getUserId());
+		try {
+			mongoDB = new MongoDBHandler();
+			Map<String,String> cardDetails= mongoDB.checkCardPresent(sessionemail, 1);
+			
+			if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
+				System.out.println("The flag value is true and so going to go to user home page ===========>");
+				cardChange.setText("If you wish to change your card details, please update. Else you can proceed");
+				if((cardDetails.get("cardType")).equalsIgnoreCase("Credit")){
+					creditCard.setText(cardDetails.get("cardNumber"));
+				} else {
+					costcoCard.setText(cardDetails.get("cardNumber"));
+				}
+				
+				Intent userHome = new Intent(this, UserHomePageActivity.class);
+				userHome.putExtra("EMAIL",sessionemail );
+				userHome.putExtra("TYPE",1);
+				startActivity(userHome);
+			} 
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} 
 		
-		
+		System.out.println("Inside on card details  --------> " + sessionemail);
 		
 	}
 	@Override

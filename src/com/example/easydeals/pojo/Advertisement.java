@@ -3,10 +3,12 @@ package com.example.easydeals.pojo;
 import java.io.Serializable;
 import java.util.Date;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 public class Advertisement implements Serializable{
+	/**
+	 * 
+	 */
+	
+	private static final long serialVersionUID = 1L;
 	private String id;
 	private String retailerEmail;
 	private String adName;

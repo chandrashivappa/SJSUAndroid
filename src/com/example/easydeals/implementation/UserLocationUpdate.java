@@ -6,9 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
@@ -23,9 +20,7 @@ import android.os.Looper;
 import android.support.v7.app.ActionBarActivity;
 import android.widget.Toast;
 
-import com.example.easydeals.R;
 import com.example.easydeals.db.MongoDBHandler;
-import com.example.easydeals.pojo.Advertisement;
 
 public class UserLocationUpdate extends ActionBarActivity{
 
@@ -49,14 +44,12 @@ public class UserLocationUpdate extends ActionBarActivity{
 		
 	class PeriodicChecker extends Thread implements LocationListener{
 		private UserLocationUpdate parent;
-		private MainActivity mainParent;
 		
 		public PeriodicChecker(UserLocationUpdate parent){
 			this.parent = parent;
 		}
 		
 		public PeriodicChecker(MainActivity mainParent){
-			this.mainParent = mainParent;
 		}
 		@Override
 		public void run(){
@@ -102,7 +95,6 @@ public class UserLocationUpdate extends ActionBarActivity{
 			}
 		}			
 
-			@SuppressWarnings("deprecation")
 			@Override
 			public void onLocationChanged(Location location) {
 				// TODO Auto-generated method stub

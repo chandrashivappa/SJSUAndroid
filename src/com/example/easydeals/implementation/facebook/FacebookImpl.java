@@ -3,19 +3,18 @@
 package com.example.easydeals.implementation.facebook;
 
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 
 import com.example.easydeals.db.MongoDBHandler;
+import com.example.easydeals.pojo.EasyDealsSession;
 import com.example.easydeals.pojo.User;
 import com.facebook.HttpMethod;
 import com.facebook.Request;
@@ -29,7 +28,7 @@ public class FacebookImpl {
 	
 	private MongoDBHandler mongoDB;
 	String email;
-	com.example.easydeals.pojo.Session easyDealsSession;
+	EasyDealsSession easyDealsSession;
 	
 	private  void initMap(Map<String, String> categoryMap) {
 		categoryMap.put(InterestMapper.CUSTOM_CLOTHING, "NO");
@@ -59,12 +58,12 @@ public class FacebookImpl {
 		   	        	   if (response != null) {
 		   	        	   Log.i(TAG, "user response is " + response.getRawResponse());
 		   	        	   email = (String) response.getGraphObject().getProperty("email");
-		   	        	   easyDealsSession = com.example.easydeals.pojo.Session.getInstance();
+		   	        	   easyDealsSession = com.example.easydeals.pojo.EasyDealsSession.getInstance();
 		   	        	   easyDealsSession.setUserId(email);
 		   	        	   System.out.println("the user email is set in easydeals session");
 		   	        	   easyDealsSession.setEmailType(1);
 		   	        	   System.out.println("Email of the facebook user inside facebook impl -----> " + email);
-		   	        	   String updatedTime = (String) response.getGraphObject().getProperty("updated_time");
+		   	        	   //String updatedTime = (String) response.getGraphObject().getProperty("updated_time");
 		   	        	   String birthDay = (String) response.getGraphObject().getProperty("birthday");
 		   	        	   String firstName = (String) response.getGraphObject().getProperty("first_name");
 		   	        
@@ -99,14 +98,10 @@ public class FacebookImpl {
 	   	        	   response.getGraphObject().getProperty("data");
 	   	        	   //response.getGraphObject().getPropertyAsList(propertyName, graphObjectClass);
 	   	        	   JSONArray categories = (JSONArray) response.getGraphObject().getProperty("data");
-	   	        	   Set<String> categorySet = InterestMapper.getFaceBookCategories();
 
 	   	        	   if (categories.length() > 0) {
-	   	        		  List<String>categoryList = new ArrayList<String>();
 	   	        		   for (int i = 0; i < categories.length(); i++) {
 	   	        			   JSONObject category = categories.optJSONObject(i);
-	   	        			   
-	   	        			   
 	   	        			   String categoryName = category.optString("category");
 	   	        			   String categoryValue = category.optString("name");
 	   	        			   if (categoryName.equalsIgnoreCase("Retail and consumer merchandise") || categoryName.equalsIgnoreCase("Clothing") ||
@@ -123,7 +118,7 @@ public class FacebookImpl {
 	   	        				   } else {
 	   	        					   categoryName = "Books";
 	   	        				   }
-	   	        			   } else if(categoryName.equalsIgnoreCase("Food/beverages")){
+	   	        			   } else if(categoryName.equalsIgnoreCase("Food/Beverages")){
 	   	        				   //check whether it is food or beverage
 	   	        				   if(categoryValue.equalsIgnoreCase("Starbucks") || categoryValue.equalsIgnoreCase("Jamba Juice")){
 	   	        					   categoryName = "Drinks";
@@ -131,6 +126,13 @@ public class FacebookImpl {
 	   	        					   categoryName = "Food";
 	   	        				   }
 	   	        				   
+	   	        			   } else if(categoryName.equalsIgnoreCase("Restaurant/Cafe")){
+	   	        				   //check whether it is Olive garden or cheesecake factory
+	   	        				   if(categoryValue.equalsIgnoreCase("The Cheesecake Factory") || categoryValue.equalsIgnoreCase("Olive Garden")) {
+	   	        					   categoryName = "Food";
+	   	        				   } else {
+	   	        					   categoryName = "Drinks";
+	   	        				   }
 	   	        			   }
 	   	        			   System.out.println("Category name inside fb impl =====> " + categoryName);
 	   	        			   System.out.println("Category value inside fb impl =====> " + categoryValue);
@@ -142,12 +144,13 @@ public class FacebookImpl {
 	   	        				   categoryMap.put(str, "YES");
 	   	        			   }
 	   	        		   }
-	   	        		   categoryMap.put("locationPermission", "YES");
+	   	        		   
+	   	        		   
 	   	        		   for(Map.Entry<String, String> cat : categoryMap.entrySet()){
 	   	        			   System.out.println("KEY ==> " + cat.getKey() + " VALUE ===> " + cat.getValue());
 	   	        		   }
-	   	        		
 	   	        	   } 	        	    
+	   	        	   categoryMap.put("locationPermission", "YES");
 	   	        }
 	               
 	   	       if (response.getError() != null) {
@@ -167,12 +170,10 @@ public class FacebookImpl {
    	
    	requestBatch.addCallback(new RequestBatch.Callback() {
 			
-			@SuppressWarnings("unchecked")
 			@Override
 			public void onBatchCompleted(RequestBatch batch) {
 				//calling async task to insert user data
 				new MongoDBInsert().execute(userInfo,categoryMap);
-				
 				//calling async task to insert user interest in mongo db
 				//new MongoDBUpdate().execute(categoryMap);
 
@@ -187,14 +188,16 @@ public class FacebookImpl {
 
 	
 	//async task class for inserting into mongo db
-	class MongoDBUpdate extends AsyncTask<Map<String, String>, String, String>{
+	public class FbMongoUpdate extends AsyncTask<Map<String, String>, String, String>{
 		Map<String, String> userInterest;
 		MongoDBHandler mongoDB;
 		String email;
+		Context context;
 		
 		@Override
-		protected String doInBackground(Map<String, String> ...params){
+		protected String doInBackground(Map<String, String>...params){
 			userInterest = params[0];
+			
 			if(userInterest != null){
 				email = userInterest.get("eMail");
 				System.out.println("Email of the FB user in the mongo update async task -----> " + email);
@@ -211,13 +214,14 @@ public class FacebookImpl {
 		protected void onPostExecute(String st){
 			//Actions to be performed, after interest data is inserted into mongo db
 			System.out.println("User interest data inserted for user ---> !!" + st);
+			
 		}
 	}
 
 
 	// Async task, to insert data into mongo db, so that the main thread will
 	// not be used.
-	class MongoDBInsert extends AsyncTask<Object, Void, String> {
+	public class MongoDBInsert extends AsyncTask<Object, Void, String> {
 
 		Map<String, String> userInterest = new HashMap<String, String>();
 		@SuppressWarnings("unchecked")
@@ -229,7 +233,6 @@ public class FacebookImpl {
 			mongoDB = new MongoDBHandler();
 			User user = (User) params[0];
 			userInterest = (Map<String, String>) params[1];
-			
 			try {
 				// calling the insert method to insert user data into mongo db
 				System.out.println("User email inside async task of user insert " + user.geteMail());
@@ -247,7 +250,7 @@ public class FacebookImpl {
 			System.out.println("User email on postexecute of user data insert --->!!" + easyDealsSession.getUserId());
 			System.out.println("The email type is  --->!!" + easyDealsSession.getEmailType());
 			
-			new MongoDBUpdate().execute(userInterest);
+			new FbMongoUpdate().execute(userInterest);
 			
 		}
 

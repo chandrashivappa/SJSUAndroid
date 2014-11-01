@@ -23,7 +23,7 @@
     <string name="pwd">Password</string>
     <string name="register">Register</string>
     <string name="fbPage">Login with Facebook</string>
-    <string name="registration">User Registration - It\'s free!!</string>
+    <string name="registration">User Registration</string>
     <string name="registerBack">Back</string>
     <string name="femalebutton">Female</string>
     <string name="malebutton">Male</string>
@@ -68,8 +68,8 @@
     
     <string name="testText">Textt</string>
     
-    <string name="app_id">851642588181633</string>
-  <!--  <string name="app_id">358083957687281</string> -->
+   <!--  <string name="app_id">XXXXXXXXX</string> -->
+   <string name="app_id">XXXXXXX</string>
     
     
     <color name="blue">#6699FF</color>

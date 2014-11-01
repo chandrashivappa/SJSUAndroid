@@ -2,30 +2,28 @@ package com.example.easydeals.implementation;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.List;
 
-import android.app.AlarmManager;
-import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -35,7 +33,7 @@ import com.example.easydeals.R;
 import com.example.easydeals.adapter.TabsPageAdapter;
 import com.example.easydeals.db.MongoDBHandler;
 import com.example.easydeals.pojo.Advertisement;
-import com.example.easydeals.pojo.Session;
+import com.example.easydeals.pojo.EasyDealsSession;
 
 public class UserHomePageActivity extends ActionBarActivity implements
 		ActionBar.TabListener, LocationListener {
@@ -49,7 +47,7 @@ public class UserHomePageActivity extends ActionBarActivity implements
 	MongoDBHandler mongoDB;
 	Handler msgHandler;
 	HomeActivity homeFragment;
-	Session session;
+	EasyDealsSession session;
 	String sessionEmail;
 	Thread periodicChecker;
 	double previousLong = 0.0;
@@ -60,10 +58,7 @@ public class UserHomePageActivity extends ActionBarActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.reg_complete_activity);
-		Intent locUpdateIntent = getIntent();
-		email = locUpdateIntent.getExtras().getString("EMAIL");
-		System.out.println("The email using intent inside user home page activity is " + email);
-		session = Session.getInstance();
+		session = EasyDealsSession.getInstance();
 		sessionEmail = session.getUserId();
 		type = session.getEmailType();
 		System.out.println("The Session email id ---> " + sessionEmail);
@@ -74,27 +69,17 @@ public class UserHomePageActivity extends ActionBarActivity implements
 
 		viewPager.setAdapter(mAdapter);
 		mAdapter.setValue(sessionEmail);
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
 		actionBar.setHomeButtonEnabled(false);
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setTitle("Easy Deals");
-
+		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.app_name) + "</big></font>"));
 		// Adding tabs
 		actionBar.addTab(actionBar.newTab().setText("Home").setTabListener(this));
 		actionBar.addTab(actionBar.newTab().setText("History").setTabListener(this));
 		Bundle fragBundle = new Bundle();
 		fragBundle.putString("EMAIL", sessionEmail);
-		try {
-			mongoDB = new MongoDBHandler();
-			boolean flag = mongoDB.checkCardPresent(sessionEmail, type);
-			if (!flag) {
-				callCardDetailAlert();
-			}
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		}
-
-		System.out
-				.println("<================= When session email is not null =================>");
+		System.out.println("<================= When session email is not null =================>");
 		// Getting LocationManager object
 		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 		// Creating an empty criteria object
@@ -164,9 +149,18 @@ public class UserHomePageActivity extends ActionBarActivity implements
 		case R.id.logout:
 			System.out.println("Pressed the logout button");
 			session.setUserId(null);
+			if(type == 1){
+				com.facebook.Session fbSession = com.facebook.Session.getActiveSession();
+				if(fbSession != null){
+					if(!fbSession.isClosed()){
+						fbSession.closeAndClearTokenInformation();
+						//com.facebook.Session.setActiveSession(null);
+					}
+				}
+			}
 			Intent logoutIntent = new Intent(this, MainActivity.class);
 			logoutIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			System.out.println("Stopped the thread");
+			System.out.println("Logged out");
 			startActivity(logoutIntent);
 			return true;
 		default:
@@ -201,6 +195,7 @@ public class UserHomePageActivity extends ActionBarActivity implements
 
 	}
 
+	@SuppressWarnings("deprecation")
 	@Override
 	public void onLocationChanged(Location location) {
 		// TODO Auto-generated method stub
@@ -331,7 +326,7 @@ public class UserHomePageActivity extends ActionBarActivity implements
 
 	}
 
-	public void callCardDetailAlert() {
+	/*public void callCardDetailAlert() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(
 				UserHomePageActivity.this);
 		builder.setTitle("Card Details!");
@@ -354,5 +349,5 @@ public class UserHomePageActivity extends ActionBarActivity implements
 		builder.setMessage("You have not yet entered your card details!!!");
 		AlertDialog theAlert = builder.create();
 		theAlert.show();
-	}
+	}	*/
 }

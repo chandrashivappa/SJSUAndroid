@@ -3,9 +3,12 @@ package com.example.easydeals.implementation;
 import java.net.UnknownHostException;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -14,19 +17,22 @@ import android.widget.Toast;
 
 import com.example.easydeals.R;
 import com.example.easydeals.db.MongoDBHandler;
-import com.example.easydeals.pojo.Session;
+import com.example.easydeals.pojo.EasyDealsSession;
 
 public class SignInActivity extends ActionBarActivity implements OnClickListener{
 	EditText userName, password;
 	Button login;
 	MongoDBHandler mongoDB;
 	String userEmail, pwd;
-	Session session = null;
+	EasyDealsSession session = null;
 	
 	 @Override
 	    protected void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState);
 	        setContentView(R.layout.signin_activity);
+	        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+			actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+			actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.signin) + "</big></font>"));
 	        userName = (EditText)findViewById(R.id.emailEdit);
 	        password = (EditText)findViewById(R.id.pwdEdit);
 	        login = (Button)findViewById(R.id.loginBtn);
@@ -67,7 +73,7 @@ public class SignInActivity extends ActionBarActivity implements OnClickListener
 			System.out.println("Inside onpostexecute of user authentication!!");
 
 			if(status.equalsIgnoreCase("Signup User")){
-				session = Session.getInstance();
+				session = EasyDealsSession.getInstance();
 				session.setUserId(userEmail);
 				
 				Intent userHomePage = new Intent(getApplicationContext(), UserHomePageActivity.class);

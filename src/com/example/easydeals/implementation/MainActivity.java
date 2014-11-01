@@ -1,10 +1,16 @@
 package com.example.easydeals.implementation;
 
+import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Map;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -19,7 +25,9 @@ import com.example.easydeals.implementation.facebook.FacebookImpl;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
+import com.facebook.model.GraphUser;
 import com.facebook.widget.LoginButton;
+import com.facebook.widget.LoginButton.UserInfoChangedCallback;
 
 public class MainActivity extends ActionBarActivity implements OnClickListener {
 	// private static Button facebookBtn;
@@ -28,8 +36,9 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private UiLifecycleHelper uiHelper;
 	private static final String TAG = "MainFragment";
 	private Session session = null;
-	com.example.easydeals.pojo.Session easyDealSession = null;
+	com.example.easydeals.pojo.EasyDealsSession easyDealSession = null;
 	MongoDBHandler mongoDB;
+	String email;
 
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
@@ -42,9 +51,28 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	private void onSessionStateChange(Session session, SessionState state,
 			Exception exception) {
 		if (state.isOpened()) {
-
 			this.session = session;
-
+			try {
+				mongoDB = new MongoDBHandler();
+				Map<String,String> cardDetails= mongoDB.checkCardPresent(email, 1);
+				
+				if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
+					System.out.println("The flag value is true and so going to go to user home page ===========>");
+					Intent userHome = new Intent(this, UserHomePageActivity.class);
+					userHome.putExtra("EMAIL",email );
+					userHome.putExtra("TYPE",1);
+					startActivity(userHome);
+				}  else {
+					System.out.println("The flag value is false and so going to go to card page ===========>");
+					Intent userHome = new Intent(this, CardDetailsCollectionActivity.class);
+					userHome.putExtra("EMAIL",email );
+					userHome.putExtra("TYPE",1);
+					startActivity(userHome);
+				} 
+			} catch (UnknownHostException e) {
+				e.printStackTrace();
+			} 
+			System.out.println("Session is open !! inside onsessionstate change \\\\\\\\\\\\\\\\\\" + session);
 		} else if (state.isClosed()) {
 			this.session = null;
 			Log.i(TAG, "Logged out...");
@@ -53,7 +81,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 	@Override
 	protected void onSaveInstanceState(Bundle savedInstance) {
-
 		if (session != null) {
 			Session.saveSession(session, savedInstance);
 		}
@@ -64,6 +91,10 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 
+		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
+		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big><b>" + getString(R.string.app_name) + "</b></big></font>"));
+
 		uiHelper = new UiLifecycleHelper(this, callback);
 		uiHelper.onCreate(savedInstanceState);
 
@@ -71,13 +102,29 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		authButton.setReadPermissions(Arrays.asList("user_location",
 				"user_birthday", "user_likes", "email"));
+		authButton.setUserInfoChangedCallback(new UserInfoChangedCallback() {
+			@Override
+			public void onUserInfoFetched(GraphUser user) {
+				if (user != null) {
+					System.out.println("the user name is ---> " + user.getName());
+					email = (String) user.asMap().get("email");
+					System.out.println("the email is ---> " + email);
+					easyDealSession = com.example.easydeals.pojo.EasyDealsSession.getInstance();
+					easyDealSession.setUserId(email);
+					easyDealSession.setEmailType(1);
+				} else {
+					System.out.println("You are not logged");
+				}
+			}
+		});
 
 		signInBtn = (Button) findViewById(R.id.signIn);
 		signUpLink = (TextView) findViewById(R.id.signUpLink);
 
 		signInBtn.setOnClickListener(this);
 		signUpLink.setOnClickListener(this);
-
+		
+		
 	}
 
 	@Override
@@ -86,19 +133,23 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 		if (resultCode != RESULT_CANCELED) {
 			super.onActivityResult(requestCode, resultCode, data);
 			uiHelper.onActivityResult(requestCode, resultCode, data);
-
 			Session.getActiveSession().onActivityResult(this, requestCode, resultCode, data);
 			if (Session.getActiveSession() != null && Session.getActiveSession().isOpened()) {
 				FacebookImpl faceBook = new FacebookImpl();
 				String str = faceBook.makeMeRequest(Session.getActiveSession());
-				easyDealSession = com.example.easydeals.pojo.Session.getInstance();
-				Intent i = new Intent(this, UserHomePageActivity.class);
-				System.out.println("Inside on activity result : " + easyDealSession.getUserId());
-				i.putExtra("EMAIL", easyDealSession.getUserId());
-				i.putExtra("TYPE", 1);
-				startActivity(i);
+				System.out.println("the email is " + str);
 			}
 		}
+	}
+	
+	@Override
+	public void onResume() {
+		super.onResume();
+		Session session = Session.getActiveSession();
+		if (session != null && (session.isOpened() || session.isClosed())) {
+			onSessionStateChange(session, session.getState(), null);
+		}
+		uiHelper.onResume();
 	}
 
 	@Override
