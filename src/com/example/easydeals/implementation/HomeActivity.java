@@ -3,7 +3,10 @@ package com.example.easydeals.implementation;
 import java.net.UnknownHostException;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Map;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.LayoutInflater;
@@ -15,8 +18,10 @@ import android.widget.TextView;
 import com.example.easydeals.R;
 import com.example.easydeals.adapter.CustomHomeArrayAdapter;
 import com.example.easydeals.db.MongoDBHandler;
+import com.example.easydeals.implementation.CardDetailsCollectionActivity.CardPresentDetails;
 import com.example.easydeals.pojo.Advertisement;
 import com.example.easydeals.pojo.EasyDealsSession;
+import com.example.easydeals.pojo.User;
 
 public class HomeActivity extends ListFragment {
 	String sessionEmail;
@@ -28,6 +33,38 @@ public class HomeActivity extends ListFragment {
 	EasyDealsSession session;
 	
 	//inserted on oct 8 night
+	
+	//async task class for inserting into mongo db
+	public class AdDetails extends AsyncTask<String, Void, ArrayList<Advertisement>>{
+	
+		MongoDBHandler mongoDB;
+		String email;
+		Context context;
+		boolean cardPresent = false;
+				
+		@Override
+		protected ArrayList<Advertisement> doInBackground(String...params){
+			email = params[0];
+			
+			ArrayList<Advertisement> advertisement = null;
+			
+			if(email != null){
+				
+				try {
+					mongoDB = new MongoDBHandler();
+					advertisement = mongoDB.getAdsPushedToUser(sessionEmail);
+	
+				} catch (Exception e) {
+					e.printStackTrace();
+				} 
+			}
+			
+			return advertisement;
+		}
+			    
+	}
+
+
 
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -40,13 +77,22 @@ public class HomeActivity extends ListFragment {
 		
 		
 		
-	try {
-			advertisement = mongoDB.getAdsPushedToUser(sessionEmail);
-		} catch (UnknownHostException e) {
-			e.printStackTrace();
-		} catch (ParseException e) {
-			e.printStackTrace();
+//	try {
+//			advertisement = mongoDB.getAdsPushedToUser(sessionEmail);
+//		} catch (UnknownHostException e) {
+//			e.printStackTrace();
+//		} catch (ParseException e) {
+//			e.printStackTrace();
+//		}
+		
+		try {
+			advertisement = new AdDetails().execute(sessionEmail).get();
 		}
+		catch (Exception e) {
+			e.printStackTrace();
+			
+		}
+
 		String retrievedList[] = new String[advertisement.size()];
 		int index = 0;
 		for(Advertisement ad : advertisement){

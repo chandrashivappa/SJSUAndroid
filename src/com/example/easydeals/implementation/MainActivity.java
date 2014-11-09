@@ -4,11 +4,13 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Map;
 
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Html;
 import android.util.Log;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import com.example.easydeals.R;
 import com.example.easydeals.db.MongoDBHandler;
 import com.example.easydeals.implementation.facebook.FacebookImpl;
+import com.example.easydeals.pojo.User;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.UiLifecycleHelper;
@@ -40,6 +43,71 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 	MongoDBHandler mongoDB;
 	String email;
 
+	//async task class for inserting into mongo db
+	public class CardPresentDetails extends AsyncTask<User, Void, Boolean>{
+		User user;
+		MongoDBHandler mongoDB;
+		String email;
+		Context context;
+		boolean cardPresent = false;
+		
+//		private final ProgressDialog dialog = new ProgressDialog(MainActivity.this);
+		
+		@Override
+		protected Boolean doInBackground(User...params){
+			user = params[0];
+			
+			if(user != null){
+				
+				try {
+					mongoDB = new MongoDBHandler();
+					Map<String,String> cardDetails= mongoDB.checkCardPresent(user.geteMail(), user.getEmailType());
+	
+					if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
+						System.out.println("The flag value is true and so going to go to user home page ===========>");
+						
+						cardPresent = true;
+					}  else {
+						System.out.println("The flag value is false and so going to go to card page ===========>");
+						cardPresent = false;
+					} 
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				} 
+			}
+			
+			return cardPresent;
+		}
+		
+//	    protected void onPreExecute() {
+//	    	this.dialog.setMessage("Processing..."); 
+//	    	this.dialog.show();
+//	    }
+	    
+//		public void onPostExecute(Boolean cardPresent){
+//			//Actions to be performed, after interest data is inserted into mongo db
+//
+////			this.dialog.cancel();
+//			
+//			if (cardPresent == true) {
+//				Intent userHome = new Intent(MainActivity.this, UserHomePageActivity.class);
+//				userHome.putExtra("EMAIL",email );
+//				userHome.putExtra("TYPE",1);
+//				startActivity(userHome);
+//				
+//			}
+//			else {
+//				Intent userHome = new Intent(MainActivity.this, CardDetailsCollectionActivity.class);
+//				userHome.putExtra("EMAIL",email );
+//				userHome.putExtra("TYPE",1);
+//				startActivity(userHome);
+//				
+//			}
+//			
+//			
+//		}
+	}
+
 	private Session.StatusCallback callback = new Session.StatusCallback() {
 		@Override
 		public void call(Session session, SessionState state,
@@ -52,11 +120,20 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			Exception exception) {
 		if (state.isOpened()) {
 			this.session = session;
+			
+			User user = new User();
+			user.seteMail(email);
+			user.setEmailType(1);
+			
+			
 			try {
-				mongoDB = new MongoDBHandler();
-				Map<String,String> cardDetails= mongoDB.checkCardPresent(email, 1);
-				
-				if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
+//				mongoDB = new MongoDBHandler();
+//				Map<String,String> cardDetails= mongoDB.checkCardPresent(email, 1);
+			
+			//Boolean cardPresent = new CardPresentDetails().execute(user).get();
+			Boolean cardPresent = new CardPresentDetails().execute(user).get();
+//				if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
+				if (cardPresent == true) {
 					System.out.println("The flag value is true and so going to go to user home page ===========>");
 					Intent userHome = new Intent(this, UserHomePageActivity.class);
 					userHome.putExtra("EMAIL",email );
@@ -69,9 +146,11 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 					userHome.putExtra("TYPE",1);
 					startActivity(userHome);
 				} 
-			} catch (UnknownHostException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
-			} 
+			}
+			
+			
 			System.out.println("Session is open !! inside onsessionstate change \\\\\\\\\\\\\\\\\\" + session);
 		} else if (state.isClosed()) {
 			this.session = null;

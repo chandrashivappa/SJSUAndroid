@@ -4,6 +4,8 @@ import java.net.UnknownHostException;
 import java.util.Map;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -20,7 +22,9 @@ import android.widget.TextView;
 import com.example.easydeals.R;
 import com.example.easydeals.constants.Validation;
 import com.example.easydeals.db.MongoDBHandler;
+import com.example.easydeals.implementation.MainActivity.CardPresentDetails;
 import com.example.easydeals.pojo.EasyDealsSession;
+import com.example.easydeals.pojo.User;
 
 public class CardDetailsCollectionActivity extends ActionBarActivity implements OnClickListener{
 
@@ -33,6 +37,66 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 	MongoDBHandler mongoDB;
 	EasyDealsSession session;
 	String creditFlag, costcoFlag;
+
+
+	//async task class for inserting into mongo db
+	public class CardPresentDetails extends AsyncTask<User, Void, Map<String,String>>{
+		User user;
+		MongoDBHandler mongoDB;
+		String email;
+		Context context;
+		boolean cardPresent = false;
+				
+		@Override
+		protected Map<String,String> doInBackground(User...params){
+			user = params[0];
+			
+			Map<String,String> cardDetails = null;
+			
+			if(user != null){
+				
+				try {
+					mongoDB = new MongoDBHandler();
+					cardDetails= mongoDB.checkCardPresent(user.geteMail(), user.getEmailType());
+	
+					if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
+						System.out.println("The flag value is true and so going to go to user home page ===========>");
+						
+						cardPresent = true;
+					}  else {
+						System.out.println("The flag value is false and so going to go to card page ===========>");
+						cardPresent = false;
+					} 
+				} catch (UnknownHostException e) {
+					e.printStackTrace();
+				} 
+			}
+			
+			return cardDetails;
+		}
+			    
+//		public void onPostExecute(Boolean cardPresent){
+//			//Actions to be performed, after interest data is inserted into mongo db
+//			
+//			if (cardPresent == true) {
+//				Intent userHome = new Intent(CardDetailsCollectionActivity.this, UserHomePageActivity.class);
+//				userHome.putExtra("EMAIL",email );
+//				userHome.putExtra("TYPE",1);
+//				startActivity(userHome);
+//				
+//			}
+//			else {
+//				Intent userHome = new Intent(MainActivity.this, CardDetailsCollectionActivity.class);
+//				userHome.putExtra("EMAIL",email );
+//				userHome.putExtra("TYPE",1);
+//				startActivity(userHome);
+//				
+//			}
+//			
+//			
+//		}
+	}
+
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -53,8 +117,21 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 		cardSubmitBtn.setOnClickListener(this);
 		
 		try {
-			mongoDB = new MongoDBHandler();
-			Map<String,String> cardDetails= mongoDB.checkCardPresent(sessionemail, 1);
+//			mongoDB = new MongoDBHandler();
+//			Map<String,String> cardDetails= mongoDB.checkCardPresent(sessionemail, 1);
+			
+			User user = new User();
+			user.seteMail(sessionemail);
+			user.setEmailType(1);
+			
+			
+//			try {
+//				mongoDB = new MongoDBHandler();
+//				Map<String,String> cardDetails= mongoDB.checkCardPresent(email, 1);
+			
+			//Boolean cardPresent = new CardPresentDetails().execute(user).get();
+			Map<String,String> cardDetails = new CardPresentDetails().execute(user).get();
+
 			
 			if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
 				System.out.println("The flag value is true and so going to go to user home page ===========>");
@@ -70,7 +147,7 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 				userHome.putExtra("TYPE",1);
 				startActivity(userHome);
 			} 
-		} catch (UnknownHostException e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 		} 
 		
