@@ -28,8 +28,26 @@ public class Advertisement implements Serializable{
 	private int adCount;
 	private int yesCount;
 	private Integer productId;
+	private double storeLatitude;
+	private double storeLongitude;
 
 	
+
+	public double getStoreLatitude() {
+		return storeLatitude;
+	}
+
+	public void setStoreLatitude(double storeLatitude) {
+		this.storeLatitude = storeLatitude;
+	}
+
+	public double getStoreLongitude() {
+		return storeLongitude;
+	}
+
+	public void setStoreLongitude(double storeLongitude) {
+		this.storeLongitude = storeLongitude;
+	}
 
 	public Advertisement(){
 		

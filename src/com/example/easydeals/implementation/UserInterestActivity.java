@@ -43,7 +43,7 @@ public class UserInterestActivity extends ActionBarActivity implements OnClickLi
 		setContentView(R.layout.interest_activity);
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.interestCheck) + "</big></font>"));
+		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big>" + getString(R.string.interestCheck) + "</big></font>"));
 		Intent userIntent = getIntent();
 		userEmail = userIntent.getExtras().getString("EMAIL");
 		session = EasyDealsSession.getInstance();
@@ -164,6 +164,7 @@ public class UserInterestActivity extends ActionBarActivity implements OnClickLi
 			}
 		} else if (id == R.id.backBtn) {
 			Intent backIntent = new Intent(this,RegisterActivity.class);
+			backIntent.putExtra("EMAIL", userEmail);
 			startActivity(backIntent);
 		} else {
 		}

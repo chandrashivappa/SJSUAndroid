@@ -4,7 +4,6 @@ import java.net.UnknownHostException;
 import java.util.Arrays;
 import java.util.Map;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
@@ -79,33 +78,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			return cardPresent;
 		}
 		
-//	    protected void onPreExecute() {
-//	    	this.dialog.setMessage("Processing..."); 
-//	    	this.dialog.show();
-//	    }
-	    
-//		public void onPostExecute(Boolean cardPresent){
-//			//Actions to be performed, after interest data is inserted into mongo db
-//
-////			this.dialog.cancel();
-//			
-//			if (cardPresent == true) {
-//				Intent userHome = new Intent(MainActivity.this, UserHomePageActivity.class);
-//				userHome.putExtra("EMAIL",email );
-//				userHome.putExtra("TYPE",1);
-//				startActivity(userHome);
-//				
-//			}
-//			else {
-//				Intent userHome = new Intent(MainActivity.this, CardDetailsCollectionActivity.class);
-//				userHome.putExtra("EMAIL",email );
-//				userHome.putExtra("TYPE",1);
-//				startActivity(userHome);
-//				
-//			}
-//			
-//			
-//		}
+
 	}
 
 	private Session.StatusCallback callback = new Session.StatusCallback() {
@@ -127,12 +100,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			
 			
 			try {
-//				mongoDB = new MongoDBHandler();
-//				Map<String,String> cardDetails= mongoDB.checkCardPresent(email, 1);
-			
-			//Boolean cardPresent = new CardPresentDetails().execute(user).get();
-			Boolean cardPresent = new CardPresentDetails().execute(user).get();
-//				if(cardDetails.get("cardType") != null && cardDetails.get("cardNumber") != null){
+				Boolean cardPresent = new CardPresentDetails().execute(user).get();
 				if (cardPresent == true) {
 					System.out.println("The flag value is true and so going to go to user home page ===========>");
 					Intent userHome = new Intent(this, UserHomePageActivity.class);
@@ -172,7 +140,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big><b>" + getString(R.string.app_name) + "</b></big></font>"));
+		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big><b>" + getString(R.string.app_name) + "</b></big></font>"));
 
 		uiHelper = new UiLifecycleHelper(this, callback);
 		uiHelper.onCreate(savedInstanceState);

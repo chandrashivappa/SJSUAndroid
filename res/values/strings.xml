@@ -11,6 +11,7 @@
     <string name="pwdText">Password</string>
     <string name="unamehint">Email</string>
     <string name="pwdHint">Password</string>
+    <string name="forgotPwd">Forgot Password ?</string>
     <string name="login">Login</string>
     <string name="or">OR</string>
     <string name="back">Back</string>
@@ -57,19 +58,19 @@
     <string name="creditCardText">Credit Card</string>
     <string name="costcoCardText">Costco Card</string>
     <string name="homeTab">This is home</string>
-    <string name="historyTab">Select an option, to see your previous deals!!</string>
+    <string name="historyTab">Select an option, to see your history!!</string>
     <string name="update">Update</string>
     <string name="cancel">Cancel</string>
     <string name="editUserTitle">Edit User Interests</string>
     <string name="option">Select an option</string>
     
     
-    <string name="welcomeMessage">Welcome!! Today\&apos;s deals are </string>
+    <string name="welcomeMessage"> </string>
     
     <string name="testText">Textt</string>
     
-   <!--  <string name="app_id">XXXXXXXXX</string> -->
-   <string name="app_id">XXXXXXX</string>
+    <string name="app_id">XXXX</string>
+   <!-- <string name="app_id">XXXX</string> -->
     
     
     <color name="blue">#6699FF</color>
@@ -79,6 +80,8 @@
     <color name="ligth_gray">#f4f4f4</color>
     <color name="dark_gray">#343434</color>   
     <color name="white">#FFFFFF</color>
+    <color name="light_blue">#66CCFF</color>
+    <color name="light_brown">#CC9900</color>
 
 
 </resources>

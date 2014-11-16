@@ -33,8 +33,8 @@ public class CustomHistoryAdapter extends ArrayAdapter<Advertisement> {
 			}
 
 			TextView adName = (TextView)convertView.findViewById(R.id.adHistory);
-			adName.setText(advertisement.getAdName() + " @$" + advertisement.getPrice() + " for " + advertisement.getProductName() +
-					" in " + advertisement.getStoreName());
+			adName.setText(advertisement.getProductName() + "'s, " + advertisement.getAdName() + " for $" + advertisement.getPrice() + " for " + 
+					" @ " + advertisement.getStoreName());
 			return convertView;
 		}
 

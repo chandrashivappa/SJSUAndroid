@@ -1,5 +1,6 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:scrollbars="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/black"
@@ -9,7 +10,11 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.example.easydeals.implementation.MainActivity" >
 
-
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+    	android:layout_height="fill_parent">
+        
    <TextView
        android:id="@+id/or"
        android:layout_width="wrap_content"
@@ -18,8 +23,9 @@
        android:layout_centerHorizontal="true"
        android:layout_marginTop="176dp"
        android:text="@string/or"
-       android:textColor="@color/white"
-       android:textSize="@dimen/abc_action_bar_title_text_size" />
+       android:textColor="@color/yellow"
+       android:textSize="@dimen/abc_action_bar_title_text_size"
+       android:typeface="serif" />
 
    <Button
        android:id="@+id/signIn"
@@ -30,7 +36,8 @@
        android:layout_marginTop="29dp"
        android:background="@drawable/green_button"
        android:text="@string/signin"
-       android:textSize="@dimen/abc_action_bar_title_text_size" />
+       android:textSize="@dimen/abc_action_bar_title_text_size"
+       android:typeface="serif" />
 
    <TextView
        android:id="@+id/signUpLink"
@@ -41,7 +48,8 @@
        android:layout_marginTop="31dp"
        android:text="@string/signup"
        android:textAppearance="?android:attr/textAppearanceMedium"
-       android:textColor="@color/yellow" />
+       android:textColor="@color/yellow"
+       android:typeface="serif" />
 
    <com.facebook.widget.LoginButton
        android:id="@+id/authButton"
@@ -49,6 +57,8 @@
        android:layout_height="wrap_content"
        android:layout_alignParentTop="true"
        android:layout_centerHorizontal="true"
-       android:layout_marginTop="74dp" />
+       android:layout_marginTop="74dp"
+       android:typeface="serif" />
 
 </RelativeLayout>
+</ScrollView>

@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import com.example.easydeals.implementation.RegCompleteActivity;
 import com.example.easydeals.pojo.Advertisement;
 import com.example.easydeals.pojo.User;
 import com.mongodb.BasicDBObject;
@@ -28,7 +27,7 @@ public class MongoDBHandler {
 	MongoClient mongoDB;
 	List<String> yesList = new ArrayList<String>();
 	int count = 0;
-
+	
 	private static final String MONGO_DB_NAME = "295B_MOBILEDB";
 	private static final String USER_COLLECTION_NAME="USER_INFO";
 	private static final String INTEREST_COLLECTION_NAME="INTEREST_INFO";
@@ -36,13 +35,7 @@ public class MongoDBHandler {
 	private static final String PUSHED_AD_DETAILS_COLLECTION = "PUSHED_AD_DETAILS";
 	private static final String AD_COUNT_COLLECTION = "AD_COUNT";
 	private static final String POS_COLLECTION = "POS_COLLECTION_NAME";
-	private static final String LOCLAT = "locationLatitude";
-	private static final String LOCLONG = "locationLongitude";
-	
 	private static final String MONGO_DB_HOST = "localhost";
-	//AdNotification adNotification;
-	RegCompleteActivity adNotification;
-	//Advertisement advertisement;
 	public MongoDBHandler() {
 	}
 	
@@ -51,12 +44,12 @@ public class MongoDBHandler {
 	public boolean insertUserDataCollection(User user) throws UnknownHostException {
 		boolean uniqueUserFlag = false;
 		System.out.println("**************** Inside mongodb handler to insert user data ****************");
-		mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
-		DB db = mongoDB.getDB(MONGO_DB_NAME);
-		DBCollection userTable = db.getCollection(USER_COLLECTION_NAME);
-		System.out.println("Got the user table ------> " + userTable.getName());
 		uniqueUserFlag = isEmailUnique(user.geteMail());
 		if(uniqueUserFlag){
+			mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
+			DB db = mongoDB.getDB(MONGO_DB_NAME);
+			DBCollection userTable = db.getCollection(USER_COLLECTION_NAME);
+			System.out.println("Got the user table ------> " + userTable.getName());
 			BasicDBObject userInfo = new BasicDBObject();
 			userInfo.put("lastName", user.getlName());
 			userInfo.put("email", user.geteMail());
@@ -207,8 +200,8 @@ public class MongoDBHandler {
 		// inserting the interest into main user collection based on the email
 		if(userInterestInfo != null){
 			parentUserObject.put("interests", userInterestInfo);
-			parentUserObject.put(LOCLAT, 37.358005);
-			parentUserObject.put(LOCLONG,-121.997102);
+			/*parentUserObject.put(LOCLAT, 37.358005);
+			parentUserObject.put(LOCLONG,-121.997102);*/
 			userCollection.update(queryUser, parentUserObject);
 		}
 		mongoDB.close();
@@ -265,7 +258,7 @@ public class MongoDBHandler {
 			cardDetails.put("cardType", cardType);
 			cardDetails.put("cardNumber" , cardNum);
 			
-			//inserting carddetails field inside user info
+			//inserting card details field inside user info
 			userDetails.put("cardDetails", cardDetails);
 			userCollection.update(searchUser, userDetails);
 		} catch (UnknownHostException e) {
@@ -374,7 +367,7 @@ public class MongoDBHandler {
 			
 			System.out.println("The retailer object id is " + adId);
 			BasicDBObject adPushed = new BasicDBObject();
-			adPushed.put("reatilerEmail", retEmail);
+			adPushed.put("retailerEmail", retEmail);
 			adPushed.put("adId", adId);
 			adPushed.put("adCategory", adCategory);
 			adPushed.put("city", city);
@@ -421,6 +414,7 @@ public class MongoDBHandler {
 			
 			DBObject queryInterest = new BasicDBObject();
 			queryInterest.put("email", email);
+			System.out.println("the user email is ---------------------> " + email);
 			DBCursor cursor = userCollection.find(queryInterest);
 			while(cursor.hasNext()){
 				DBObject temp = cursor.next();
@@ -546,7 +540,8 @@ public class MongoDBHandler {
 	
 	//This method is called from getAdsByLocation, when there are no recommended pos data or when there are no ads corresponding to
 	//the recommended pos product ids
-	public List<Advertisement> getAdsOnlyBasedOnUserInterest(double longitude, double latitude, String email) throws UnknownHostException, ParseException{
+	public List<Advertisement> getAdsOnlyBasedOnUserInterest(double longitude, double latitude, String email) 
+			throws UnknownHostException, ParseException{
 		System.out.println("------------- Getting ads only based on user interest as there are no ads related to pos/no pos -------------");
 		Advertisement [] advertisement = null;
 		List<Advertisement> resultList = new ArrayList<Advertisement>();
@@ -558,7 +553,8 @@ public class MongoDBHandler {
 			//The ads that match user interest
 			System.out.println("Resultant advertisements are ");
 			for(Advertisement adv : resultList){
-				System.out.println(adv.getId() + " ----> " + adv.getAdCategory() + " " + adv.getAdName() + " " + adv.getProductName() + " " +
+				System.out.println(adv.getId() + " ----> " + adv.getAdCategory() + " " + adv.getAdName() + " " 
+						+ adv.getProductName() + " " +
 				adv.getPrice() + " !!!");
 				
 			}
@@ -568,68 +564,119 @@ public class MongoDBHandler {
 	}
 		return finalList;
 	}
-	//This method is called from getAdsByLocation, after a set of recommended product ids is received from pos.
-	public Advertisement[] getAdsBasedOnProductLocation(Integer [] recommendation, double longitude, double latitude) throws UnknownHostException, ParseException{
-		mongoDB = new MongoClient(MONGO_DB_HOST, 27017);
-		DB db = mongoDB.getDB(MONGO_DB_NAME);
-		DBCollection adCollection = db.getCollection(AD_COLLECTION);
-		Advertisement advertisement[] = null;
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		Calendar calendar = new GregorianCalendar();
-		String startDate = sdf.format(calendar.getTime());
-		Date stDate = sdf.parse(startDate);
-
-		DBObject queryAdByLoc = new BasicDBObject();
-		List<BasicDBObject> locationObject = new ArrayList<BasicDBObject>();
-
-		//Getting advertisements that match the location, and the advertisement expiry date
-		//is not less than the current date
-		if(recommendation != null){
-			System.out.println("------------- Getting ads based on pos data and location -------------");
-			locationObject.add(new BasicDBObject("storeLongitude", longitude));
-			locationObject.add(new BasicDBObject("storeLatitude", latitude));
-			locationObject.add(new BasicDBObject("startDate", new BasicDBObject("$lte", stDate)));
-			locationObject.add(new BasicDBObject("endDate", new BasicDBObject("$gte", stDate)));
-			locationObject.add(new BasicDBObject("productId", new BasicDBObject("$in", recommendation)));
-			queryAdByLoc.put("$and", locationObject);
-		} else {
-			System.out.println("------------- Getting ads based location -------------");
-			locationObject.add(new BasicDBObject("storeLongitude", longitude));
-			locationObject.add(new BasicDBObject("storeLatitude", latitude));
-			locationObject.add(new BasicDBObject("startDate", new BasicDBObject("$lte", stDate)));
-			locationObject.add(new BasicDBObject("endDate", new BasicDBObject("$gte", stDate)));
-			queryAdByLoc.put("$and", locationObject);
-		}
-		DBCursor advDetails = adCollection.find(queryAdByLoc);
-		int adCount = advDetails.count();
-		int index = 0;
-		if(adCount != 0 && advDetails != null){
-			advertisement = new Advertisement[adCount];
-			while(advDetails.hasNext()){
-				DBObject adNotify = advDetails.next();
-				advertisement[index] = new Advertisement();
-				advertisement[index].setProductId(((Number)adNotify.get("productId")).intValue());
-				advertisement[index].setAdName((String)adNotify.get("adName"));
-				advertisement[index].setProductName((String)adNotify.get("productName"));
-				advertisement[index].setPrice((Double)adNotify.get("price"));
-				advertisement[index].setStoreName((String)adNotify.get("storeName"));
-				advertisement[index].setStoreLocation((String)adNotify.get("storeLocation"));
-				advertisement[index].setCity((String)adNotify.get("city"));
-				advertisement[index].setState((String)adNotify.get("state"));
-				advertisement[index].setZipcode((String)adNotify.get("zipcode"));
-				advertisement[index].setAgePreference(((Number)adNotify.get("agePreference")).intValue());
-				advertisement[index].setAdCategory((String)adNotify.get("adCategory"));
-				advertisement[index].setRetailerEmail((String)adNotify.get("retailerEmail"));
-				advertisement[index].setEndDate((Date)adNotify.get("endDate"));
-				advertisement[index].setAdDesc((String)adNotify.get("adDesc"));
-				advertisement[index].setId(adNotify.get("_id").toString());
-				System.out.println("The object id of the retailer is ---> " + adNotify.get("_id").toString());
-				index++;
-			}
-		}
-		return advertisement;
-	}
 	
+	// This method is called from getAdsByLocation, after a set of recommended
+		// product ids is received from pos.
+		public Advertisement[] getAdsBasedOnProductLocation(
+				Integer[] recommendation, double longitude, double latitude)
+				throws UnknownHostException, ParseException {
+			mongoDB = new MongoClient("54.193.83.43", 27017);
+			DB db = mongoDB.getDB("295B_MOBILEDB");
+			DBCollection adCollection = db.getCollection(AD_COLLECTION);
+			Advertisement advertisement[] = null;
+			SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+			Calendar calendar = new GregorianCalendar();
+			String startDate = sdf.format(calendar.getTime());
+			Date stDate = sdf.parse(startDate);
+
+			DBObject queryAdByLoc = new BasicDBObject();
+			List<BasicDBObject> locationObject = new ArrayList<BasicDBObject>();
+
+			// Getting advertisements that match the location, and the advertisement
+			// expiry date
+			// is not less than the current date
+
+			if (recommendation != null) {
+				System.out.println("------------- Getting ads based on pos data and location -------------");
+				locationObject.add(new BasicDBObject("startDate",new BasicDBObject("$lte", stDate)));
+				locationObject.add(new BasicDBObject("endDate", new BasicDBObject("$gte", stDate)));
+				locationObject.add(new BasicDBObject("productId",new BasicDBObject("$in", recommendation)));
+				queryAdByLoc.put("$and", locationObject);
+			} else {
+				System.out.println("------------- Getting ads based on location -------------");
+				locationObject.add(new BasicDBObject("startDate",new BasicDBObject("$lte", stDate)));
+				locationObject.add(new BasicDBObject("endDate", new BasicDBObject("$gte", stDate)));
+				queryAdByLoc.put("$and", locationObject);
+			}
+			DBCursor advDetails = adCollection.find(queryAdByLoc);
+			int advCount = advDetails.count();
+			System.out.println("The ad count before filtering location ==> " + advCount);
+			int index = 0;
+			Set<String> filteredAdIds = new HashSet<String>();
+			if (advCount != 0 && advDetails != null) {
+				
+				advertisement = new Advertisement[advCount];
+				while (advDetails.hasNext()) {
+					DBObject adNotify = advDetails.next();
+					double dbLatitude = (Double) adNotify.get("storeLatitude");
+					double dbLongitude = (Double) adNotify.get("storeLongitude");
+					double latDistance = Math.toRadians(latitude - dbLatitude);
+					double lngDistance = Math.toRadians(longitude - dbLongitude);
+					double a = (Math.sin(latDistance / 2) * Math
+							.sin(latDistance / 2))
+							+ (Math.cos(Math.toRadians(latitude)))
+							* (Math.cos(Math.toRadians(dbLatitude)))
+							* (Math.sin(lngDistance / 2))
+							* (Math.sin(lngDistance / 2));
+
+					double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+
+					double dist = 6371 * c;
+					System.out.println("dist is ----------------------------> " + dist);
+					if (dist < 4) {
+						filteredAdIds.add(adNotify.get("_id").toString());
+					}
+					advertisement[index] = new Advertisement();
+					advertisement[index].setAdName((String) adNotify.get("adName"));
+					advertisement[index].setProductName((String) adNotify.get("productName"));
+					advertisement[index].setStoreLatitude((Double)adNotify.get("storeLatitude"));
+					advertisement[index].setStoreLongitude((Double)adNotify.get("storeLongitude"));
+					advertisement[index].setPrice((Double) adNotify.get("price"));
+					advertisement[index].setStoreName((String) adNotify.get("storeName"));
+					advertisement[index].setStoreLocation((String) adNotify.get("storeLocation"));
+					advertisement[index].setAgePreference(((Number) adNotify.get("agePreference")).intValue());
+					advertisement[index].setAdCategory((String) adNotify.get("adCategory"));
+					advertisement[index].setRetailerEmail((String) adNotify.get("retailerEmail"));
+					advertisement[index].setState((String)adNotify.get("state"));
+					advertisement[index].setCity((String) adNotify.get("city"));
+					advertisement[index].setEndDate((Date) adNotify.get("endDate"));
+					advertisement[index].setAdDesc((String) adNotify.get("adDesc"));
+					advertisement[index].setId(adNotify.get("_id").toString());
+					System.out.println("The object id of the retailer is ---> "+ adNotify.get("_id").toString());
+					index++;
+				}
+			}
+			
+			for(Advertisement ad : advertisement){
+				System.out.println("AD category ---> " + ad.getAdCategory());
+			}
+			
+			Advertisement [] finalFilteredAds = getAdsWithinLocationRadius(filteredAdIds, advertisement);
+			mongoDB.close();
+			return finalFilteredAds;
+		}
+		
+		
+		//To get only the ads within the location radius 
+		public Advertisement[] getAdsWithinLocationRadius(Set<String> adIds, Advertisement [] adArray ){
+			List<Advertisement> alist = new ArrayList<Advertisement>();
+			for(int i = 0 ; i < adArray.length ; i ++){
+					if (adIds.contains(adArray[i].getId())) {
+						System.out.println("Ad id within location radius");
+						alist.add(adArray[i]);
+					} else {
+						System.out.println("the ad is not with in radius");
+					}
+			}
+			Advertisement [] filteredAds = alist.toArray(new Advertisement[alist.size()]);
+			
+			for(Advertisement ad : filteredAds){
+				System.out.println(ad.getStoreLocation() + " " + ad.getStoreLatitude() + " " + ad.getStoreLongitude());
+			}
+			
+			return filteredAds;
+		}
+
 	//This method is called from getAdsByLocation, to check whether the ads that match user interest has already
 	//been pushed or not. If the ad is already pushed, that will not be added to the list. If its not pushed, it will
 	//be added and pushed.

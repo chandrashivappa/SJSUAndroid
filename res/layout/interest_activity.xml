@@ -4,61 +4,8 @@
     android:layout_height="match_parent"
     android:background="@color/black"
     android:orientation="vertical" >
-
-    <CheckBox
-        android:id="@+id/food"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/books"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="17dp"
-        android:text="@string/food"
-        android:textColor="@color/yellow" />
-
-    <CheckBox
-        android:id="@+id/drinks"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/electronics"
-        android:layout_below="@+id/cloth"
-        android:text="@string/drinks"
-        android:textColor="@color/yellow" />
-
-    <CheckBox
-        android:id="@+id/cloth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/drinks"
-        android:layout_below="@+id/kid"
-        android:text="@string/clothing"
-        android:textColor="@color/yellow" />
-
-    <CheckBox
-        android:id="@+id/kid"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/cloth"
-        android:layout_below="@+id/books"
-        android:text="@string/kid"
-        android:textColor="@color/yellow" />
-
-    <CheckBox
-        android:id="@+id/books"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/kid"
-        android:layout_below="@+id/food"
-        android:text="@string/book"
-        android:textColor="@color/yellow" />
-
-    <CheckBox
-        android:id="@+id/electronics"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/drinks"
-        android:layout_centerHorizontal="true"
-        android:text="@string/electronics"
-        android:textColor="@color/yellow" />
+    
+    
 
     <TextView
         android:id="@+id/textView1"
@@ -69,7 +16,73 @@
         android:text="@string/interestPageText"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:textColor="@color/yellow"
-        android:textColorHint="@color/yellow" />
+        android:textColorHint="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/drinks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cloth"
+        android:layout_below="@+id/cloth"
+        android:layout_marginTop="24dp"
+        android:text="@string/drinks"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/cloth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="29dp"
+        android:layout_toLeftOf="@+id/next"
+        android:text="@string/clothing"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/electronics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/drinks"
+        android:layout_below="@+id/drinks"
+        android:layout_marginTop="21dp"
+        android:text="@string/electronics"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/books"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/drinks"
+        android:layout_alignBottom="@+id/drinks"
+        android:layout_alignLeft="@+id/food"
+        android:text="@string/book"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/kid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/electronics"
+        android:layout_alignLeft="@+id/books"
+        android:text="@string/kid"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/food"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/drinks"
+        android:layout_alignLeft="@+id/next"
+        android:layout_marginLeft="24dp"
+        android:text="@string/food"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <CheckBox
         android:id="@+id/location"
@@ -77,9 +90,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/electronics"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="45dp"
         android:text="@string/location"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <Button
         android:id="@+id/backBtn"
@@ -88,8 +102,10 @@
         android:layout_alignBaseline="@+id/next"
         android:layout_alignBottom="@+id/next"
         android:layout_alignLeft="@+id/textView1"
+        android:layout_marginLeft="18dp"
         android:background="@drawable/green_button"
-        android:text="@string/back" />
+        android:text="@string/back"
+        android:typeface="serif" />
 
     <Button
         android:id="@+id/next"
@@ -97,8 +113,9 @@
         android:layout_height="wrap_content"
         android:layout_alignRight="@+id/textView1"
         android:layout_below="@+id/location"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="36dp"
         android:background="@drawable/green_button"
-        android:text="@string/next" />
+        android:text="@string/next"
+        android:typeface="serif" />
 
 </RelativeLayout>

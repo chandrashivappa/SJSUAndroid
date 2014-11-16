@@ -13,7 +13,8 @@
         android:layout_marginTop="39dp"
         android:text="@string/pwdText"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <Button
         android:id="@+id/loginBtn"
@@ -22,7 +23,8 @@
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
         android:background="@drawable/green_button"
-        android:text="@string/login" />
+        android:text="@string/login"
+        android:typeface="serif" />
 
     <EditText
         android:id="@+id/pwdEdit"
@@ -34,7 +36,8 @@
         android:ems="10"
         android:hint="@string/pwdHint"
         android:inputType="textPassword"
-        android:textColor="@color/blue" />
+        android:textColor="@color/blue"
+        android:typeface="serif" />
 
     <TextView
         android:id="@+id/emailText"
@@ -45,7 +48,8 @@
         android:layout_marginBottom="89dp"
         android:text="@string/unameText"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <EditText
         android:id="@+id/emailEdit"
@@ -57,8 +61,21 @@
         android:ems="10"
         android:hint="@string/unamehint"
         android:inputType="textEmailAddress"
-        android:textColor="@color/blue">
+        android:textColor="@color/blue"
+        android:typeface="serif" >
+
         <requestFocus />
     </EditText>
+
+    <TextView
+        android:id="@+id/forgotPassword"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginBtn"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp"
+        android:text="@string/forgotPwd"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
 </RelativeLayout>

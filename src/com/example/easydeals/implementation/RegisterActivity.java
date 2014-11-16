@@ -54,10 +54,10 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 		setContentView(R.layout.register_activity);
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.registration) + "</big></font>"));
+		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big>" + getString(R.string.registration) + "</big></font>"));
 		
 		Intent eType = getIntent();
-		 emailType = eType.getExtras().getInt("emailType");
+		emailType = eType.getExtras().getInt("emailType");
 
 		fName = (EditText) findViewById(R.id.firstName);
 		lName = (EditText) findViewById(R.id.lastName);
@@ -169,12 +169,6 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 		case R.id.registerBackBtn:
 			// instantiating the SQLite db handler class
 			sdh = new SqlDbHandler(this);
-			// For testing purpose, getting the record from SQLite db where id =
-			// 2.Currently commented. After inserting
-			// some records, uncomment the below line, to test.
-			// sdh.getUserRecord(2);
-			// Moving to the main page, if back button is pressed in the
-			// registration page.
 			Intent regBackIntent = new Intent(this, MainActivity.class);
 			startActivity(regBackIntent);
 			break;

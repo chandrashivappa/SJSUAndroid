@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black">
+    
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal" >
+>
+    
+    
+
+    <EditText
+        android:id="@+id/password"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/eMail"
+        android:layout_below="@+id/eMail"
+        android:ems="10"
+        android:hint="@string/pwd"
+        android:inputType="textPassword"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        android:typeface="serif" />
+
+    <EditText
+        android:id="@+id/firstName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="84dp"
+        android:layout_marginTop="30dp"
+        android:ems="10"
+        android:hint="@string/fName"
+        android:inputType="text"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        android:typeface="serif" />
+
+    <Button
+        android:id="@+id/registerBackBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/password"
+        android:layout_below="@+id/female"
+        android:layout_marginLeft="22dp"
+        android:background="@drawable/green_button"
+        android:text="@string/registerBack"
+        android:typeface="serif" />
+
+    <Button
+        android:id="@+id/register"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/dobText"
+        android:layout_below="@+id/male"
+        android:background="@drawable/green_button"
+        android:text="@string/register"
+        android:textColor="@color/black"
+        android:typeface="serif" />
+
+    <EditText
+        android:id="@+id/dobText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/password"
+        android:layout_below="@+id/password"
+        android:ems="10"
+        android:hint="@string/dobhint"
+        android:inputType="date"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        android:typeface="serif" >
+
+        <requestFocus />
+    </EditText>
+
+    <ImageButton
+        android:id="@+id/imageButton1"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_above="@+id/female"
+        android:layout_toRightOf="@+id/dobText"
+        android:contentDescription="@string/imgContentDesc"
+        android:cropToPadding="true"
+        android:src="@drawable/calender_icon" />
+
+    <EditText
+        android:id="@+id/eMail"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/lastName"
+        android:layout_below="@+id/lastName"
+        android:ems="10"
+        android:hint="@string/email"
+        android:inputType="textEmailAddress"
+        android:textAppearance="?android:attr/textAppearanceMediumInverse"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        android:textColorLink="@color/yellow"
+        android:typeface="serif" />
+
+    <RadioButton
+        android:id="@+id/female"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/registerBackBtn"
+        android:layout_below="@+id/dobText"
+        android:layout_marginTop="14dp"
+        android:text="@string/femalebutton"
+        android:textColor="@color/blue"
+        android:textColorLink="@color/white"
+        android:typeface="serif" />
+
+    <RadioButton
+        android:id="@+id/male"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/female"
+        android:layout_alignBottom="@+id/female"
+        android:layout_alignRight="@+id/password"
+        android:text="@string/malebutton"
+        android:textColor="@color/blue"
+        android:textColorLink="@color/white"
+        android:typeface="serif" />
+
+    <EditText
+        android:id="@+id/lastName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/firstName"
+        android:layout_below="@+id/firstName"
+        android:layout_weight="33"
+        android:ems="10"
+        android:hint="@string/lName"
+        android:inputType="textPersonName"
+        android:textColor="@color/blue"
+        android:textColorHint="@color/blue"
+        android:typeface="serif" />
+
+</RelativeLayout>
+</ScrollView>

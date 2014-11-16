@@ -2,8 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/black" >
+    android:background="@color/black" 
+    >
 
+    
     <EditText
         android:id="@+id/costcoEditText"
         android:layout_width="wrap_content"
@@ -38,7 +40,8 @@
         android:layout_centerVertical="true"
         android:text="@string/costcoCardText"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <TextView
         android:id="@+id/creditText"
@@ -50,7 +53,8 @@
         android:layout_marginLeft="18dp"
         android:text="@string/creditCardText"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <Button
         android:id="@+id/cardSubmit"
@@ -61,7 +65,8 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="40dp"
         android:background="@drawable/green_button"
-        android:text="@string/submit" />
+        android:text="@string/submit"
+        android:typeface="serif" />
 
     <TextView
         android:id="@+id/cardOr"
@@ -72,17 +77,7 @@
         android:layout_marginBottom="32dp"
         android:text="@string/or"
         android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColor="@color/yellow" />
-
-    <TextView
-        android:id="@+id/changeCard"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/creditEditText"
-        android:layout_marginBottom="15dp"
-        android:layout_toLeftOf="@+id/cardSubmit"
-        android:text="Medium Text"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:textColorHint="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
 </RelativeLayout>

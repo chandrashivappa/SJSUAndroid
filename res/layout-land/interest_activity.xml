@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/black"
+    android:gravity="center_horizontal"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:text="@string/interestPageText"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textColor="@color/yellow"
+        android:textColorHint="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/electronics"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/kid"
+        android:layout_alignBottom="@+id/kid"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="24dp"
+        android:text="@string/electronics"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/cloth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/location"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="16dp"
+        android:text="@string/clothing"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/kid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/location"
+        android:layout_marginLeft="14dp"
+        android:layout_toRightOf="@+id/backBtn"
+        android:text="@string/kid"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/books"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/drinks"
+        android:layout_alignLeft="@+id/kid"
+        android:text="@string/book"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/food"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/drinks"
+        android:layout_alignLeft="@+id/electronics"
+        android:text="@string/food"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignRight="@+id/electronics"
+        android:layout_below="@+id/drinks"
+        android:layout_marginRight="17dp"
+        android:text="@string/location"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/drinks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/cloth"
+        android:layout_below="@+id/cloth"
+        android:text="@string/drinks"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <Button
+        android:id="@+id/backBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/next"
+        android:layout_alignBottom="@+id/next"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_marginLeft="19dp"
+        android:background="@drawable/green_button"
+        android:text="@string/back"
+        android:typeface="serif" />
+
+    <Button
+        android:id="@+id/next"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/location"
+        android:layout_toLeftOf="@+id/electronics"
+        android:background="@drawable/green_button"
+        android:text="@string/next"
+        android:typeface="serif" />
+
+</RelativeLayout>

@@ -1,11 +1,8 @@
 package com.example.easydeals.implementation;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.util.List;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -19,6 +16,8 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.TaskStackBuilder;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBar.Tab;
@@ -40,6 +39,8 @@ public class UserHomePageActivity extends ActionBarActivity implements
 	private ViewPager viewPager;
 	private TabsPageAdapter mAdapter;
 	private ActionBar actionBar;
+	private int numOfMessages = 0;
+	private int notificationId = (int)System.currentTimeMillis();
 	LocationManager locationManager;
 	String serviceProvider;
 	double longitude, latitude;
@@ -62,70 +63,76 @@ public class UserHomePageActivity extends ActionBarActivity implements
 		sessionEmail = session.getUserId();
 		type = session.getEmailType();
 		System.out.println("The Session email id ---> " + sessionEmail);
-		// Initialization
-		viewPager = (ViewPager) findViewById(R.id.pager);
-		actionBar = getSupportActionBar();
-		mAdapter = new TabsPageAdapter(getSupportFragmentManager());
-
-		viewPager.setAdapter(mAdapter);
-		mAdapter.setValue(sessionEmail);
-		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setHomeButtonEnabled(false);
-		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-		actionBar.setTitle("Easy Deals");
-		actionBar.setTitle(Html.fromHtml("<font color=\"yellow\"><big>" + getString(R.string.app_name) + "</big></font>"));
-		// Adding tabs
-		actionBar.addTab(actionBar.newTab().setText("Home").setTabListener(this));
-		actionBar.addTab(actionBar.newTab().setText("History").setTabListener(this));
-		Bundle fragBundle = new Bundle();
-		fragBundle.putString("EMAIL", sessionEmail);
-		System.out.println("<================= When session email is not null =================>");
-		// Getting LocationManager object
-		locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-		// Creating an empty criteria object
-		Criteria criteria = new Criteria();
-		// Getting the name of the provider that meets the criteria
-		serviceProvider = locationManager.getBestProvider(criteria, false);
-		if (serviceProvider != null && !serviceProvider.equals("")) {
-			// Get the location from the given provider
-			Location location = locationManager
-					.getLastKnownLocation(serviceProvider);
-			locationManager.requestLocationUpdates(serviceProvider, 5000, 0,
-					this);
-			if (location != null && session.getUserId() != null) {
-				System.out.println("On location changed!!");
-				onLocationChanged(location);
-			} else {
-				System.out.println("Location cannot be retrieved");
-			}
+		
+		if(sessionEmail == null){
+			Intent mainIntent = new Intent(this, MainActivity.class);
+			mainIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			startActivity(mainIntent);
 		} else {
-			System.out.println("No provider found");
-		}
-		/**
-		 * on swiping the viewpager make respective tab selected
-		 * */
-		homeFragment = new HomeActivity();
-		homeFragment.setArguments(fragBundle);
-		getSupportFragmentManager().beginTransaction()
-				.replace(R.id.pager, homeFragment).commit();
-		viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-
+			
+			// Initialization
+			viewPager = (ViewPager) findViewById(R.id.pager);
+			actionBar = getSupportActionBar();
+			mAdapter = new TabsPageAdapter(getSupportFragmentManager());
+			viewPager.setAdapter(mAdapter);
+			mAdapter.setValue(sessionEmail);
+			actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
+			actionBar.setHomeButtonEnabled(false);
+			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+			actionBar.setTitle("Easy Deals");
+			actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big>" + getString(R.string.app_name) + "</big></font>"));
+			
+			// Adding tabs
+			actionBar.addTab(actionBar.newTab().setText("Home").setTabListener(this));
+			actionBar.addTab(actionBar.newTab().setText("History").setTabListener(this));
+			Bundle fragBundle = new Bundle();
+			fragBundle.putString("EMAIL", sessionEmail);
+				
+			// Getting LocationManager object
+			locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+			
+			// Creating an empty criteria object
+			Criteria criteria = new Criteria();
+			
+			// Getting the name of the provider that meets the criteria
+			serviceProvider = locationManager.getBestProvider(criteria, false);
+			if (serviceProvider != null && !serviceProvider.equals("")) {
+				// Get the location from the given provider
+				Location location = locationManager.getLastKnownLocation(serviceProvider);
+				locationManager.requestLocationUpdates(serviceProvider, 5000, 0,this);
+				if (location != null && session.getUserId() != null) {
+					System.out.println("On location changed!!");
+					onLocationChanged(location);
+				} else {
+					System.out.println("Location cannot be retrieved");
+				}
+			} else {
+				System.out.println("No provider found");
+			}
+			/**
+			 * 
+			 * on swiping the viewpager make respective tab selected
+			 * */
+			homeFragment = new HomeActivity();
+			homeFragment.setArguments(fragBundle);
+			getSupportFragmentManager().beginTransaction().replace(R.id.pager, homeFragment).commit();
+			viewPager.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+				
 			@Override
 			public void onPageSelected(int position) {
-				// on changing the page
-				// make respected tab selected
+				// on changing the page make respective tab selected
 				actionBar.setSelectedNavigationItem(position);
 			}
-
+				
 			@Override
 			public void onPageScrolled(int arg0, float arg1, int arg2) {
 			}
-
+				
 			@Override
 			public void onPageScrollStateChanged(int arg0) {
 			}
 		});
-
+	}
 	}
 
 	@Override
@@ -154,7 +161,6 @@ public class UserHomePageActivity extends ActionBarActivity implements
 				if(fbSession != null){
 					if(!fbSession.isClosed()){
 						fbSession.closeAndClearTokenInformation();
-						//com.facebook.Session.setActiveSession(null);
 					}
 				}
 			}
@@ -195,7 +201,6 @@ public class UserHomePageActivity extends ActionBarActivity implements
 
 	}
 
-	@SuppressWarnings("deprecation")
 	@Override
 	public void onLocationChanged(Location location) {
 		// TODO Auto-generated method stub
@@ -205,24 +210,16 @@ public class UserHomePageActivity extends ActionBarActivity implements
 		if (session.getUserId() != null) {
 			longitude = location.getLongitude();
 			latitude = location.getLatitude();
-			BigDecimal bigLat = new BigDecimal(latitude);
-			BigDecimal bigLong = new BigDecimal(longitude);
-			bigLat = bigLat.setScale(3, RoundingMode.HALF_DOWN);
-			bigLong = bigLong.setScale(3, RoundingMode.HALF_DOWN);
-			latitude = bigLat.doubleValue();
-			longitude = bigLong.doubleValue();
-
-			System.out.println("Formatted LONGITUDE =============> "
-					+ longitude);
-			System.out.println("Formatted LATITUDE =============> " + latitude);
+			
+			System.out.println(" LONGITUDE =============> "+ longitude);
+			System.out.println(" LATITUDE =============> " + latitude);
 
 			mongoDB = new MongoDBHandler();
 			try {
 				if (longitude != previousLong && latitude != previousLat) {
 					previousLong = longitude;
 					previousLat = latitude;
-					advertisement = mongoDB.getAdsByLocation(longitude,
-							latitude, sessionEmail);
+					advertisement = mongoDB.getAdsByLocation(longitude, latitude, sessionEmail);
 					listSize = advertisement.size();
 					adArray = new Advertisement[listSize];
 					int adArrayIndex = 0;
@@ -234,9 +231,7 @@ public class UserHomePageActivity extends ActionBarActivity implements
 					System.out
 							.println("No need to call db, as user is in same location");
 				}
-
 			} catch (ParseException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 
@@ -244,70 +239,83 @@ public class UserHomePageActivity extends ActionBarActivity implements
 
 		if (advertisement != null && listSize == 1) {
 			System.out.println("AD NOT NULL");
+			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+			CharSequence notificationText = "Easy Deals for Today!!";
+			CharSequence contentTitle = "Easy Deals for you !!";
+			CharSequence contentText = adArray[0].getAdName() + " for $" + adArray[0].getPrice() + " in " + adArray[0].getStoreName() + "!!";
+			mBuilder.setContentTitle(contentTitle);
+			mBuilder.setContentText(contentText).setNumber(++numOfMessages);
+			mBuilder.setTicker(notificationText);
+			mBuilder.setSmallIcon(R.drawable.notification_icon);
+			mBuilder.setAutoCancel(true);
+			PendingIntent resultPendingIntent = getPendingIntentForNotification(); 
+			mBuilder.setContentIntent(resultPendingIntent);
 			NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-			int icon = R.drawable.logo295b;
-			CharSequence notificationText = "Your AD Notification";
-			long time = System.currentTimeMillis();
-			Notification notification = new Notification(icon,
-					notificationText, time);
-			Context context = getApplicationContext();
-			CharSequence contentTitle = "AD Notification";
-			CharSequence contentText = adArray[0].getAdName() + " for $"
-					+ adArray[0].getPrice() + " in "
-					+ adArray[0].getStoreName() + " for ages "
-					+ adArray[0].getAgePreference() + " above !!!!";
-			try {
-				sessionEmail = mongoDB.insertAdPushedDetails(advertisement,
-						sessionEmail);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			Intent notificationIntent = new Intent(getApplicationContext(),
-					UserHomePageActivity.class);
-			PendingIntent contentIntent = PendingIntent.getActivity(
-					getApplicationContext(), 0, notificationIntent, 0);
-			notification.setLatestEventInfo(context, contentTitle, contentText,
-					contentIntent);
-			int SERVER_DATA_RECEIVED = 1;
-			notificationManager.notify(SERVER_DATA_RECEIVED, notification);
+			notificationManager.notify(notificationId,mBuilder.build());
+			System.out.println("Notification id inside list size 1 is ============> " + notificationId);
+			sessionEmail = insertPushDetails(advertisement, sessionEmail);
+			
+				
 
 		} else if (advertisement != null && listSize > 1) {
 
 			System.out.println("Ad is not null and has more than one ad");
 			NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
-			int icon = R.drawable.logo295b;
-			CharSequence notificationText = "Deals on more than 1 of your favorite things";
-			long time = System.currentTimeMillis();
-			Notification notification = new Notification(icon,
-					notificationText, time);
-			Context context = getApplicationContext();
+			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+			CharSequence notificationText = "Easy Deals on more than 1 of your favorite things";
 			CharSequence contentTitle = "Deals on lot of products";
 			CharSequence contentText = "";
 			for (Advertisement ads : adArray) {
 				contentText = contentText + " " + ads.getAdName() + " ";
 			}
-			try {
-				sessionEmail = mongoDB.insertAdPushedDetails(advertisement,
-						sessionEmail);
-			} catch (ParseException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 			contentText = "Deals on " + contentText + " all of these!!";
-			Intent notificationIntent = new Intent(getApplicationContext(),
-					UserHomePageActivity.class);
-			PendingIntent contentIntent = PendingIntent.getActivity(
-					getApplicationContext(), 0, notificationIntent, 0);
-			notification.setLatestEventInfo(context, contentTitle, contentText,
-					contentIntent);
-			int SERVER_DATA_RECEIVED = 1;
-			notificationManager.notify(SERVER_DATA_RECEIVED, notification);
-
+			mBuilder.setContentTitle(contentTitle);
+			mBuilder.setContentText(contentText).setNumber(++numOfMessages);
+			mBuilder.setTicker(notificationText);
+			mBuilder.setSmallIcon(R.drawable.notification_icon);
+			mBuilder.setWhen(System.currentTimeMillis());
+			mBuilder.setAutoCancel(true);
+			PendingIntent resultPendingIntent = getPendingIntentForNotification(); 
+			mBuilder.setContentIntent(resultPendingIntent);
+			notificationManager.notify(notificationId, mBuilder.build());
+			System.out.println("Notification id inside list size > 1 is ============> " + notificationId);
+			sessionEmail = insertPushDetails(advertisement, sessionEmail);
 		}
 
 	}
+	
+	public Intent getNotificationIntent(){
+		Intent notificationIntent;
+		if(session.getUserId()!= null){
+			notificationIntent = new Intent(getApplicationContext(),UserHomePageActivity.class);
+		} else {
+			System.out.println("================Came till here to check on logout and pressing notification icon================");
+			notificationIntent = new Intent(getApplicationContext(),MainActivity.class);
+		}
+		return notificationIntent;
+	}
 
+	public PendingIntent getPendingIntentForNotification(){
+		Context context = getApplicationContext();
+		TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+		stackBuilder.addParentStack(UserHomePageActivity.class);
+		Intent notificationIntent = getNotificationIntent();
+		stackBuilder.addNextIntent(notificationIntent);
+		notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT);
+		return resultPendingIntent;
+		
+	}
+	public String insertPushDetails(List<Advertisement> ad, String userEmail){
+		try {
+			userEmail = mongoDB.insertAdPushedDetails(ad,userEmail);
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		
+		return userEmail;
+	}
+	
 	@Override
 	public void onStatusChanged(String provider, int status, Bundle extras) {
 		// TODO Auto-generated method stub
@@ -326,28 +334,4 @@ public class UserHomePageActivity extends ActionBarActivity implements
 
 	}
 
-	/*public void callCardDetailAlert() {
-		AlertDialog.Builder builder = new AlertDialog.Builder(
-				UserHomePageActivity.this);
-		builder.setTitle("Card Details!");
-		builder.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				Intent cardIntent = new Intent(getApplicationContext(),
-						CardDetailsCollectionActivity.class);
-				cardIntent.putExtra("EMAIL", sessionEmail);
-				startActivity(cardIntent);
-			}
-		}).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.cancel();
-			}
-		});
-		builder.setMessage("You have not yet entered your card details!!!");
-		AlertDialog theAlert = builder.create();
-		theAlert.show();
-	}	*/
-}
+	}

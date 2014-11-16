@@ -6,13 +6,15 @@
     android:background="@color/black"
     android:orientation="vertical"
     tools:context=".DeviceFragment" >
-
+    
     <TextView
-        android:id="@+id/textView1"
+        android:id="@+id/homeWelMsg"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/welcomeMessage"
-        android:textColor="@color/yellow" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
     
     <ListView
         android:id="@android:id/list"

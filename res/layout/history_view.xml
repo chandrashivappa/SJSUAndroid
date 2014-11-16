@@ -7,7 +7,8 @@
     android:orientation="vertical"
     android:scrollbars="vertical"
     tools:context=".DeviceFragment" >
-
+    
+    
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,14 +16,14 @@
         android:text="@string/historyTab"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="@color/yellow"
-        android:textColorHint="@color/yellow" />
+        android:textColorHint="@color/yellow"
+        android:typeface="serif" />
 
     <Spinner
         android:id="@+id/spinner1"
-        android:layout_width="204dp"
+        android:layout_width="322dp"
         android:layout_height="wrap_content"
         android:prompt="@string/option" />
-
     
     <ListView
         android:id="@android:id/list"
