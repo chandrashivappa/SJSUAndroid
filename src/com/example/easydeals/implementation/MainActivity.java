@@ -98,27 +98,27 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			user.seteMail(email);
 			user.setEmailType(1);
 			
+			if (email != null) {
+				try {
+					Boolean cardPresent = new CardPresentDetails().execute(user).get();
+					if (cardPresent == true) {
+						System.out.println("The flag value is true and so going to go to user home page ===========>");
+						Intent userHome = new Intent(this, UserHomePageActivity.class);
+						userHome.putExtra("EMAIL",email );
+						userHome.putExtra("TYPE",1);
+						startActivity(userHome);
+					}  else {
+						System.out.println("The flag value is false and so going to go to card page ===========>");
+						Intent userHome = new Intent(this, CardDetailsCollectionActivity.class);
+						userHome.putExtra("EMAIL",email );
+						userHome.putExtra("TYPE",1);
+						startActivity(userHome);
+					} 
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			
-			try {
-				Boolean cardPresent = new CardPresentDetails().execute(user).get();
-				if (cardPresent == true) {
-					System.out.println("The flag value is true and so going to go to user home page ===========>");
-					Intent userHome = new Intent(this, UserHomePageActivity.class);
-					userHome.putExtra("EMAIL",email );
-					userHome.putExtra("TYPE",1);
-					startActivity(userHome);
-				}  else {
-					System.out.println("The flag value is false and so going to go to card page ===========>");
-					Intent userHome = new Intent(this, CardDetailsCollectionActivity.class);
-					userHome.putExtra("EMAIL",email );
-					userHome.putExtra("TYPE",1);
-					startActivity(userHome);
-				} 
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			
+			}	
 			System.out.println("Session is open !! inside onsessionstate change \\\\\\\\\\\\\\\\\\" + session);
 		} else if (state.isClosed()) {
 			this.session = null;
