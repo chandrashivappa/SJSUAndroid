@@ -54,7 +54,7 @@ public class RegisterActivity extends ActionBarActivity implements OnClickListen
 		setContentView(R.layout.register_activity);
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big>" + getString(R.string.registration) + "</big></font>"));
+		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"#FFFF66\"><big>" + getString(R.string.registration) + "</big></font>"));
 		
 		Intent eType = getIntent();
 		emailType = eType.getExtras().getInt("emailType");

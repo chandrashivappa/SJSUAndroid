@@ -80,7 +80,7 @@ public class UserHomePageActivity extends ActionBarActivity implements
 			actionBar.setHomeButtonEnabled(false);
 			actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 			actionBar.setTitle("Easy Deals");
-			actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big>" + getString(R.string.app_name) + "</big></font>"));
+			actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"#FFFF66\"><big>" + getString(R.string.app_name) + "</big></font>"));
 			
 			// Adding tabs
 			actionBar.addTab(actionBar.newTab().setText("Home").setTabListener(this));
@@ -220,16 +220,17 @@ public class UserHomePageActivity extends ActionBarActivity implements
 					previousLong = longitude;
 					previousLat = latitude;
 					advertisement = mongoDB.getAdsByLocation(longitude, latitude, sessionEmail);
-					listSize = advertisement.size();
-					adArray = new Advertisement[listSize];
-					int adArrayIndex = 0;
-					for (Advertisement adsList : advertisement) {
-						adArray[adArrayIndex] = adsList;
-						adArrayIndex++;
+					if(advertisement != null){
+						listSize = advertisement.size();
+						adArray = new Advertisement[listSize];
+						int adArrayIndex = 0;
+						for (Advertisement adsList : advertisement) {
+							adArray[adArrayIndex] = adsList;
+							adArrayIndex++;
+						}
 					}
 				} else {
-					System.out
-							.println("No need to call db, as user is in same location");
+					System.out.println("No need to call db, as user is in same location");
 				}
 			} catch (ParseException e) {
 				e.printStackTrace();
@@ -254,11 +255,7 @@ public class UserHomePageActivity extends ActionBarActivity implements
 			notificationManager.notify(notificationId,mBuilder.build());
 			System.out.println("Notification id inside list size 1 is ============> " + notificationId);
 			sessionEmail = insertPushDetails(advertisement, sessionEmail);
-			
-				
-
 		} else if (advertisement != null && listSize > 1) {
-
 			System.out.println("Ad is not null and has more than one ad");
 			NotificationManager notificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
 			NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
@@ -304,7 +301,6 @@ public class UserHomePageActivity extends ActionBarActivity implements
 		notificationIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 		PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(notificationId, PendingIntent.FLAG_CANCEL_CURRENT);
 		return resultPendingIntent;
-		
 	}
 	public String insertPushDetails(List<Advertisement> ad, String userEmail){
 		try {

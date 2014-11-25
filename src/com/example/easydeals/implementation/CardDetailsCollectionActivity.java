@@ -37,7 +37,7 @@ public class CardDetailsCollectionActivity extends ActionBarActivity implements 
 		setContentView(R.layout.card_details);
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big><b>" + getString(R.string.cardDetails) + "</b></big></font>"));
+		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"#FFFF66\"><big><b>" + getString(R.string.cardDetails) + "</b></big></font>"));
 		Intent regComplete = getIntent();
 		email = regComplete.getExtras().getString("EMAIL");
 		session = EasyDealsSession.getInstance();

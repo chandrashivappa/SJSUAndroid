@@ -36,7 +36,8 @@
         android:layout_below="@+id/cloth"
         android:layout_marginTop="20dp"
         android:text="Hot &amp; Cold Drinks"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <CheckBox
         android:id="@+id/electronics"
@@ -46,17 +47,8 @@
         android:layout_below="@+id/drinks"
         android:layout_marginTop="16dp"
         android:text="Electronics"
-        android:textColor="@color/yellow" />
-
-    <CheckBox
-        android:id="@+id/cloth"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/textView1"
-        android:layout_marginTop="48dp"
-        android:layout_toLeftOf="@+id/next"
-        android:text="Clothing &amp; Apparel"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <CheckBox
         android:id="@+id/food"
@@ -65,7 +57,8 @@
         android:layout_above="@+id/drinks"
         android:layout_alignLeft="@+id/books"
         android:text="Food"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <CheckBox
         android:id="@+id/books"
@@ -76,7 +69,8 @@
         android:layout_alignLeft="@+id/next"
         android:layout_marginLeft="20dp"
         android:text="Books"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <CheckBox
         android:id="@+id/kid"
@@ -85,7 +79,19 @@
         android:layout_alignBottom="@+id/electronics"
         android:layout_alignLeft="@+id/books"
         android:text="Kids"
-        android:textColor="@color/yellow" />
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
+
+    <CheckBox
+        android:id="@+id/cloth"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_marginTop="50dp"
+        android:layout_toLeftOf="@+id/food"
+        android:text="Clothing &amp; Apparel"
+        android:textColor="@color/yellow"
+        android:typeface="serif" />
 
     <CheckBox
         android:id="@+id/location"
@@ -93,7 +99,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/electronics"
-        android:layout_marginTop="34dp"
+        android:layout_marginTop="40dp"
         android:text="@string/location"
         android:textColor="@color/yellow"
         android:typeface="serif" />
@@ -104,7 +110,7 @@
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/textView1"
         android:layout_below="@+id/location"
-        android:layout_marginTop="53dp"
+        android:layout_marginTop="38dp"
         android:background="@drawable/green_button"
         android:text="@string/cancel"
         android:typeface="serif" />

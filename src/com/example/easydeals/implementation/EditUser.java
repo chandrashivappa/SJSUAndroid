@@ -40,7 +40,7 @@ public class EditUser extends ActionBarActivity implements OnClickListener, OnCh
 		
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big>" + getString(R.string.editUserTitle) + "</big></font>"));
+		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"#FFFF66\"><big>" + getString(R.string.editUserTitle) + "</big></font>"));
 
 		food = (CheckBox) findViewById(R.id.food);
 		books = (CheckBox) findViewById(R.id.books);

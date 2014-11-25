@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.easydeals.R;
@@ -23,7 +22,6 @@ import com.example.easydeals.pojo.EasyDealsSession;
 
 public class SignInActivity extends ActionBarActivity implements OnClickListener{
 	EditText userName, password;
-	TextView forPwd;
 	Button login;
 	MongoDBHandler mongoDB;
 	String userEmail, pwd;
@@ -35,13 +33,11 @@ public class SignInActivity extends ActionBarActivity implements OnClickListener
 	        setContentView(R.layout.signin_activity);
 	        android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 			actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-			actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big>" + getString(R.string.signin) + "</big></font>"));
+			actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"#FFFF66\"><big>" + getString(R.string.signin) + "</big></font>"));
 	        userName = (EditText)findViewById(R.id.emailEdit);
 	        password = (EditText)findViewById(R.id.pwdEdit);
 	        login = (Button)findViewById(R.id.loginBtn);
-	        forPwd = (TextView)findViewById(R.id.forgotPassword);
 	        login.setOnClickListener(this);
-	        forPwd.setOnClickListener(this);
 	    }
 
 	@Override
@@ -55,12 +51,7 @@ public class SignInActivity extends ActionBarActivity implements OnClickListener
 			pwd = password.getText().toString();
 			new UserAuthentication().execute(userEmail, pwd);
 			break;
-		
-		case R.id.forgotPassword:
-			Intent forgotIntent = new Intent(this, ForgotPasswordActivity.class);
-			startActivity(forgotIntent);
-			break;
-			
+
 		default:
 			break;
 		}

@@ -97,8 +97,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 			User user = new User();
 			user.seteMail(email);
 			user.setEmailType(1);
-			
-			if (email != null) {
 				try {
 					Boolean cardPresent = new CardPresentDetails().execute(user).get();
 					if (cardPresent == true) {
@@ -117,8 +115,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
-			
-			}	
+				
 			System.out.println("Session is open !! inside onsessionstate change \\\\\\\\\\\\\\\\\\" + session);
 		} else if (state.isClosed()) {
 			this.session = null;
@@ -140,7 +137,7 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		android.support.v7.app.ActionBar actionBar = getSupportActionBar();
 		actionBar.setBackgroundDrawable(new ColorDrawable(Color.BLACK));
-		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"yellow\"><big><b>" + getString(R.string.app_name) + "</b></big></font>"));
+		actionBar.setTitle(Html.fromHtml("<font face=\"serif\" color=\"#FFFF66\"><big><b>" + getString(R.string.app_name) + "</b></big></font>"));
 
 		uiHelper = new UiLifecycleHelper(this, callback);
 		uiHelper.onCreate(savedInstanceState);
@@ -170,8 +167,6 @@ public class MainActivity extends ActionBarActivity implements OnClickListener {
 
 		signInBtn.setOnClickListener(this);
 		signUpLink.setOnClickListener(this);
-		
-		
 	}
 
 	@Override
